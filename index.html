@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prana Sangkala - Sekar Soulpath</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #EDE4CE; --bg-sidebar: #E5D9BC; --bg-panel: #FBF7EC; --text-main: #2E2418; --text-muted: #7A6C56;
+            --accent-gold: #A9812F; --accent-gold-hover: #8C6B26; --accent-purple: #6B4A73;
+            --accent-red: #8B3A3A; --accent-blue: #3E6B62; --accent-clay: #A9552F; --border-color: #DCCFA9;
+        }
+        
+        body { font-family: 'Karla', sans-serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        
+        .sidebar { position: fixed; top: 0; left: -340px; width: 340px; height: 100%; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 25px; box-sizing: border-box; overflow-y: auto; transition: 0.3s; z-index: 1000; }
+        .sidebar.active { left: 0; }
+        .menu-toggle { position: fixed; top: 15px; left: 15px; z-index: 1001; background: var(--accent-gold); color: #FBF7EC; border: none; padding: 10px 15px; font-weight: 600; cursor: pointer; border-radius: 4px; box-shadow: 0 2px 10px rgba(46,36,24,0.25); font-family: 'Karla', sans-serif; }
+
+        .lang-toggle { position: fixed; top: 15px; right: 15px; z-index: 1001; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px; display: flex; box-shadow: 0 2px 10px rgba(46,36,24,0.2); font-family: 'Karla', sans-serif; }
+        .lang-toggle button { border: none; background: transparent; padding: 6px 12px; font-size: 0.78em; font-weight: 700; letter-spacing: 0.5px; border-radius: 16px; cursor: pointer; color: var(--text-muted); font-family: 'Karla', sans-serif; transition: 0.2s; }
+        .lang-toggle button.active { background: var(--accent-gold); color: #FBF7EC; }
+        @media print { .lang-toggle { display: none !important; } }
+        
+        .main-content { width: 100%; padding: 20px; padding-top: 70px; box-sizing: border-box; overflow-y: auto; background-color: var(--bg-main); }
+        
+        @media (min-width: 800px) {
+            .sidebar { position: static; left: 0; }
+            .menu-toggle { display: none; }
+            .main-content { width: calc(100% - 340px); padding: 40px; }
+        }
+
+        h1, h2, h3 { font-family: 'Fraunces', serif; color: var(--accent-clay); margin-top: 0; font-weight: 600; letter-spacing: 0.3px; }
+        .sidebar h2 { font-size: 1.2em; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
+        
+        label { display: block; margin-top: 14px; margin-bottom: 6px; font-size: 0.8em; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        select, input[type="date"], input[type="email"], input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin-bottom: 5px; border-radius: 5px; border: 1px solid var(--border-color); background-color: #FBF7EC; color: var(--text-main); font-size: 14px; box-sizing: border-box; font-family: 'Karla', sans-serif; }
+        select:focus, input:focus { border-color: var(--accent-gold); outline: none; }
+        
+        .btn-primary { background-color: var(--accent-clay); color: #FBF7EC; font-weight: 700; margin-top: 20px; text-transform: uppercase; letter-spacing: 0.5px; padding: 15px; cursor: pointer; transition: 0.3s; width: 100%; border: none; border-radius: 5px; font-family: 'Karla', sans-serif; }
+        .btn-primary:hover { background-color: #8A3F23; box-shadow: 0 2px 12px rgba(169, 85, 47, 0.35); }
+        .btn-secondary { background-color: var(--accent-blue); color: #FBF7EC; font-weight: 600; border: 1px solid var(--accent-blue); cursor: pointer; padding: 10px 20px; border-radius: 5px; font-family: 'Karla', sans-serif; }
+
+        .pay-tabs { display: flex; gap: 8px; margin-top: 15px; }
+        .pay-tab-btn { flex: 1; padding: 10px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: #FBF7EC; color: var(--text-muted); font-weight: 700; font-size: 0.85em; letter-spacing: 0.3px; cursor: pointer; font-family: 'Karla', sans-serif; transition: 0.2s; }
+        .pay-tab-btn.active { background: var(--accent-gold); color: #FBF7EC; border-color: var(--accent-gold); }
+        .pay-panel { display: none; }
+        .pay-panel.active { display: block; }
+        .qris-box { text-align: center; margin-top: 12px; }
+        .qris-box img { max-width: 240px; width: 100%; border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 3px 14px rgba(46,36,24,0.1); }
+        
+        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .card { border: 1px solid var(--border-color); border-radius: 10px; padding: 22px; background-color: var(--bg-panel); position: relative; overflow: hidden; box-shadow: 0 3px 14px rgba(46,36,24,0.07); }
+        .card-full { grid-column: 1 / -1; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background-color: var(--accent-purple); }
+        .card-gold::before { background-color: var(--accent-gold); }
+        .card-red::before { background-color: var(--accent-red); }
+        
+        .shadow-box { background: rgba(169, 129, 47, 0.06); padding: 15px; border-radius: 6px; margin-top: 10px; border: 1px solid rgba(169, 129, 47, 0.1); }
+        .highlight { color: var(--accent-clay); font-weight: bold; }
+        .quote { font-style: italic; border-left: 3px solid var(--accent-gold); padding-left: 15px; color: var(--text-main); margin: 15px 0; background: rgba(169, 129, 47, 0.06); padding: 12px 15px; border-radius: 0 6px 6px 0; line-height: 1.5; }
+        .link-lanjut { display: inline-block; margin-top: 14px; font-size: 0.85em; color: var(--accent-gold); text-decoration: none; font-weight: 600; letter-spacing: 0.3px; border-bottom: 1px solid transparent; transition: 0.2s; }
+        .link-lanjut:hover { border-bottom-color: var(--accent-gold); }
+        .hidden { display: none; }
+        hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(46,36,24,0), rgba(169, 129, 47, 0.5), rgba(46,36,24,0)); margin: 20px 0; }
+        
+        .body-scan { display: flex; align-items: center; gap: 15px; background: rgba(169,129,47,0.06); padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px dashed var(--accent-purple); }
+        .chakra-dot { width: 15px; height: 15px; background: var(--accent-clay); border-radius: 50%; box-shadow: 0 0 10px rgba(169,85,47,0.5); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+
+        .energy-container { margin-top: 15px; }
+        .energy-row { margin-bottom: 12px; }
+        .energy-info { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 4px; }
+        .energy-bar-bg { background-color: #E5D9BC; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; border: 1px solid var(--border-color); }
+        .energy-bar-fill { height: 100%; border-radius: 10px; width: 0%; transition: width 1s ease-in-out; background: var(--accent-gold); }
+
+        .peta-blur-wrap { position: relative; margin-top: 14px; }
+        .peta-blur-content { filter: blur(4.5px); user-select: none; pointer-events: none; }
+        .peta-blur-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; }
+        .peta-blur-overlay .lock-icon { font-size: 1.6em; }
+        .peta-blur-overlay .lock-text { font-size: 0.8em; font-weight: 700; color: var(--accent-clay); text-transform: uppercase; letter-spacing: 0.5px; background: rgba(251,247,236,0.85); padding: 4px 12px; border-radius: 20px; }
+        .peta-row { margin-bottom: 10px; }
+        .peta-row-label { display: flex; justify-content: space-between; font-size: 0.82em; margin-bottom: 3px; color: var(--text-muted); font-weight: 600; }
+        .peta-row-bg { background-color: #E5D9BC; border-radius: 10px; height: 10px; width: 100%; overflow: hidden; border: 1px solid var(--border-color); }
+        .peta-row-fill { height: 100%; border-radius: 10px; background: var(--accent-gold); }
+
+        .testi-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+        @media (min-width: 700px) { .testi-grid { grid-template-columns: 1fr 1fr; } }
+        .testi-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 18px; font-size: 0.9em; line-height: 1.7; position: relative; }
+        .testi-quote-mark { font-family: 'Fraunces', serif; font-size: 2.2em; color: var(--accent-gold); opacity: 0.4; line-height: 0.5; display: block; margin-bottom: 4px; }
+        .testi-stars { color: var(--accent-gold); font-size: 0.85em; margin-bottom: 6px; letter-spacing: 2px; }
+        .testi-author { margin-top: 10px; font-weight: 700; color: var(--accent-clay); font-size: 0.88em; }
+        .testi-meta { font-weight: 400; color: var(--text-muted); font-size: 0.9em; }
+        .trust-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; margin: 18px 0; }
+        .trust-stat { text-align: center; }
+        .trust-stat .num { font-family: 'Fraunces', serif; font-size: 1.6em; font-weight: 700; color: var(--accent-clay); display: block; }
+        .trust-stat .lbl { font-size: 0.75em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .risk-box { background: rgba(62,107,98,0.08); border: 1px solid rgba(62,107,98,0.25); border-radius: 6px; padding: 12px 15px; margin-top: 14px; font-size: 0.85em; line-height: 1.7; color: var(--text-main); }
+        .urgency-badge { display: inline-block; background: var(--accent-red); color: #FBF7EC; font-size: 0.72em; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
+
+        @media print {
+            .sidebar, .menu-toggle, .btn-secondary, .cta-box { display: none !important; }
+            .main-content { width: 100% !important; margin: 0 !important; padding: 0 !important; background: white; color: black; }
+            body { background: white; color: black; height: auto; overflow: visible; }
+            .card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; background: white; margin-bottom: 20px;}
+            h1, h2, h3, .highlight { color: #000 !important; }
+            .shadow-box { border: 1px solid #eee; background: #fafafa; color: black; }
+            .quote { border-left: 3px solid #000; background: #f9f9f9; color: #000; }
+            .card::before { display: none; }
+            .energy-bar-fill { background: #333 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')">☰ MENU</button>
+
+    <div class="lang-toggle">
+        <button id="btn-lang-id" onclick="setLanguage('id')">ID</button>
+        <button id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <div class="sidebar">
+      <div style="text-align: center; margin-bottom: 30px; padding-top: 10px;">
+    <img src="data:image/webp;base64,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" alt="Logo Prana Sangkala" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 20px rgba(169,129,47,0.3); border: 2px solid #d4af37;">
+    
+    <h1 style="color: var(--accent-clay); font-size: 1.5em; letter-spacing: 2.5px; margin: 20px 0 5px 0; text-transform: uppercase; font-weight: 700; font-family: 'Fraunces', serif;">
+        PRANA SANGKALA
+    </h1>
+    
+    <p style="color: var(--text-muted); font-size: 0.72em; letter-spacing: 1.5px; font-style: italic; margin: 0; text-transform: uppercase;">
+        <span data-i18n="tagline">PETA KOORDINAT JIWA DALAM RUANG DAN WAKTU</span>
+    </p>
+
+    <svg width="120" height="30" viewBox="0 0 120 30" style="margin-top:16px; opacity:0.75;">
+        <path d="M2 28 C 2 10, 15 4, 24 4" stroke="#A9812F" stroke-width="1.3" fill="none"/>
+        <path d="M118 28 C 118 10, 105 4, 96 4" stroke="#A9812F" stroke-width="1.3" fill="none"/>
+        <line x1="24" y1="4" x2="24" y2="28" stroke="#A9812F" stroke-width="1.3"/>
+        <line x1="96" y1="4" x2="96" y2="28" stroke="#A9812F" stroke-width="1.3"/>
+        <circle cx="60" cy="15" r="3" fill="#A9812F"/>
+        <line x1="40" y1="15" x2="53" y2="15" stroke="#A9812F" stroke-width="1"/>
+        <line x1="67" y1="15" x2="80" y2="15" stroke="#A9812F" stroke-width="1"/>
+    </svg>
+</div>  
+        <h2 data-i18n="h_input_data">⚜️ Input Data Klien</h2>
+        
+        <label style="color:var(--accent-gold);" data-i18n="lbl_dob">Tanggal Lahir Masehi</label>
+        <p style="font-size: 0.7em; color: var(--text-muted); margin-top: -3px; margin-bottom: 5px;" data-i18n="hint_dob">*Otomatis menghitung Hari, Wuku &amp; Life Path</p>
+        <input type="date" id="dob" onchange="calculateAutoFields()" oninput="calculateAutoFields()">
+
+        <label data-i18n="lbl_saptawara">Saptawara (Hari Lahir)</label>
+        <select id="saptawara" onchange="syncPararasanOtomatis()">
+            <option>Redite</option><option>Soma</option><option>Anggara</option><option>Buda</option><option>Wraspati</option><option>Sukra</option><option>Saniscara</option>
+        </select>
+        
+        <label data-i18n="lbl_pancawara">Pancawara (Pasaran)</label>
+        <select id="pancawara" onchange="syncPararasanOtomatis()">
+            <option>Umanis</option><option>Paing</option><option>Pon</option><option>Wage</option><option>Kliwon</option>
+        </select>
+
+        <label data-i18n="lbl_para">Watak Dasar (Pararasan Terhitung)</label>
+        <select id="para">
+            <option value="Laku Pandita Sakti">Laku Pandita Sakti</option>
+            <option value="Laku Bulan">Laku Bulan</option>
+            <option value="Laku Kembang">Laku Kembang</option>
+            <option value="Laku Angin">Laku Angin</option>
+            <option value="Laku Bintang">Laku Bintang</option>
+            <option value="Laku Bumi">Laku Bumi</option>
+            <option value="Laku Air">Laku Air</option>
+            <option value="Laku Surya">Laku Surya</option>
+            <option value="Lakuning Gni Agung">Lakuning Gni Agung</option>
+        </select>
+        <p style="font-size:0.75em; color: var(--text-muted); margin-top:-8px;" data-i18n="hint_para">*Otomatis terisi sesuai Hari &amp; Pasaran kelahiran (Tabel Pararasan/Palelintangan resmi).</p>
+
+        <label data-i18n="lbl_lifepath">Karakter Utama (Life Path)</label>
+        <select id="lifepath">
+            <option value="1" data-i18n-opt="lp1">1 - Sang Perintis Mandiri</option>
+            <option value="2" data-i18n-opt="lp2">2 - Sang Pendamai & Sahabat</option>
+            <option value="3" data-i18n-opt="lp3">3 - Sang Pengekspresi Ceria</option>
+            <option value="4" data-i18n-opt="lp4">4 - Sang Pembangun Disiplin</option>
+            <option value="5" data-i18n-opt="lp5">5 - Sang Petualang Bebas</option>
+            <option value="6" data-i18n-opt="lp6">6 - Sang Pengasuh Penuh Cinta</option>
+            <option value="7" data-i18n-opt="lp7">7 - Sang Pemikir & Pengamat</option>
+            <option value="8" data-i18n-opt="lp8">8 - Sang Penggerak Kelimpahan</option>
+            <option value="9" data-i18n-opt="lp9">9 - Sang Jiwa Tua Dermawan</option>
+            <option value="11" data-i18n-opt="lp11">11 - Punya Intuisi Sangat Tajam (Master)</option>
+            <option value="22" data-i18n-opt="lp22">22 - Pembangun Ide Besar (Master)</option>
+            <option value="33" data-i18n-opt="lp33">33 - Penyembuh Hati (Master)</option>
+        </select>
+        
+        <label data-i18n="lbl_wuku">Wuku (Siklus Lahir)</label>
+        <select id="wuku">
+            <option value="Sinta">Sinta</option><option value="Landep">Landep</option><option value="Ukir">Ukir</option><option value="Kulantir">Kulantir</option>
+            <option value="Tolu">Tolu</option><option value="Gumbreg">Gumbreg</option><option value="Wariga">Wariga</option><option value="Warigadian">Warigadian</option>
+            <option value="Julungwangi">Julungwangi</option><option value="Sungsang">Sungsang</option><option value="Dungulan">Dungulan</option><option value="Kuningan">Kuningan</option>
+            <option value="Langkir">Langkir</option><option value="Medangsia">Medangsia</option><option value="Pujut">Pujut</option><option value="Pahang">Pahang</option>
+            <option value="Krulut">Krulut</option><option value="Merakih">Merakih</option><option value="Tambir">Tambir</option><option value="Medangkungan">Medangkungan</option>
+            <option value="Matal">Matal</option><option value="Uye">Uye</option><option value="Menail">Menail</option><option value="Prangbakat">Prangbakat</option>
+            <option value="Bala">Bala</option><option value="Ugu">Ugu</option><option value="Wayang">Wayang</option><option value="Kelawu">Kelawu</option>
+            <option value="Dukut">Dukut</option><option value="Watugunung">Watugunung</option>
+        </select>
+        
+        <button class="btn-primary" onclick="generateBlueprint()" data-i18n="btn_analisis">Mulai Analisis Batin</button>
+    </div>
+
+    <div class="main-content">
+        <h1 data-i18n="h_main_title">PETA KOORDINAT JIWA</h1>
+        <p style="color: var(--text-muted); margin-top:-15px;" data-i18n="p_main_subtitle">Mengenali Pola Batin, Karakter Asli, dan Cara Menenangkan Diri</p>
+        <hr>
+
+        <div id="welcome-message" style="text-align: center; margin-top: 100px; color: var(--text-muted);">
+            <p data-i18n="p_welcome">Silakan isi data lahir klien di menu samping untuk melihat hasil bacaan karakternya.</p>
+        </div>
+
+        <div id="result-panel" class="hidden dashboard-grid">
+
+            <div class="card card-full card-gold" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 style="margin-bottom:0;" data-i18n="h_ringkasan">Data Kelahiran & Ringkasan Bacaan</h3>
+                    <p style="color:var(--text-muted); font-size:0.9em; margin-top:5px;"><span id="out-config" class="highlight"></span></p>
+                </div>
+            </div>
+
+            <div class="card card-full card-gold">
+                <h3 data-i18n="h_sec1">👑 1. Analisa Jiwa & Arketipe</h3>
+                <div id="out-teaser"></div>
+            </div>
+
+            <p style="text-align:center; font-size:0.8em; color:var(--text-muted); margin: 10px 0 20px 0; letter-spacing:1px;" data-i18n="p_perjalanan">— perjalanan berlanjut —</p>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec2">🔗 2. Elemen & Wacakan Prana Sangkala</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec2">Setiap jiwa membawa cara yang berbeda dalam bergerak, merasakan, dan merespons kehidupan.<br><br>Energi bawaanmu memiliki dinamika yang unik. Ada kekuatan yang selama ini menopangmu, namun ada pula pola yang diam-diam menguras energimu.<br><br>Bagaimana energi itu sebenarnya bekerja?</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec3">📊 3. Peta Energi Tubuh</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <div id="out-peta-blur"></div>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec3">Perjalanan jiwa selalu meninggalkan jejak pada tubuh.<br><br>Ada pusat energi yang menjadi kekuatan utamamu, namun ada pula bagian yang sedang meminta perhatian.<br><br>Di mana letaknya, dan apa maknanya bagi perjalanan hidupmu?</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec4">🕉 4. Mandala Body Scanning</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec4">Tidak semua luka tinggal di pikiran.<br><br>Sebagian memilih berdiam di tubuh hingga akhirnya memengaruhi cara kita menjalani hidup.<br><br>Tubuhmu sedang mencoba menyampaikan sesuatu.</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec5">⚔ 5. Benturan Jiwa & Fase Kehidupan</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec5">Pernahkah kamu merasa menghadapi pola yang sama berulang kali?<br><br>Mungkin bukan hidup yang berulang.<br><br>Melainkan pelajaran jiwamu yang belum selesai.</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec6">🌿 6. Pola Garis Leluhur</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec6">Tidak semua pola berasal dari dirimu sendiri.<br><br>Sebagian merupakan warisan yang terus bekerja hingga hari ini.<br><br>Apa yang sebenarnya sedang diwariskan kepadamu?</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full card-purple" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec7">✨ 7. Samaya Jiwa</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec7">Setiap jiwa lahir membawa sebuah janji.<br><br>Janji itu bukan tentang masa depan.<br>Melainkan alasan mengapa kehidupan ini dipilih.<br><br>Apa sebenarnya janji jiwamu?</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97; border: 1px solid #3a3226; background: #2A2318;">
+                <h3 style="color:#D9C9A0;"><span data-i18n="h_sec8">🌑 8. Sangkala Jiwa</span> <span style="font-size:0.65em; color:#B8A888; font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:#E5D9BC;" data-i18n="p_sec8">Di balik setiap cahaya selalu ada bayangan yang membuat jiwa lupa terhadap arah pulangnya.<br><br>Bukan kutukan.<br>Bukan nasib buruk.<br><br>Melainkan pola yang terus berulang hingga akhirnya disadari.</p>
+                <a href="#cta-premium-box" class="link-lanjut" style="color:#D9C9A0;" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec9">💰 9. Potensi Jiwa & Rezeki</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec9">Kelimpahan bukan sekadar hasil kerja keras.<br><br>Ia muncul ketika seseorang berjalan di ruang yang benar-benar selaras dengan jiwanya.<br><br>Di mana ruang itu bagimu?</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec10">🕰 10. Momentum Jiwa (Kala Hita)</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec10">Tidak semua waktu memiliki kualitas yang sama.<br><br>Ada masa untuk menunggu.<br>Ada masa untuk melangkah.<br><br>Dan ada momentum ketika kehidupan mulai membuka pintunya.</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" style="opacity:0.97;">
+                <h3><span data-i18n="h_sec11">🪷 11. Ritual Penyelarasan & Sankalpa Personal</span> <span style="font-size:0.65em; color:var(--accent-clay); font-weight:normal; vertical-align:middle;" data-i18n="locked_badge">🔒 Terkunci</span></h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main);" data-i18n="p_sec11">Memahami koordinat jiwa hanyalah awal.<br><br>Langkah berikutnya adalah menyelaraskan energi agar perjalanan hidup dapat dijalani dengan lebih utuh.</p>
+                <a href="#cta-premium-box" class="link-lanjut" data-i18n="link_premium">Buka di Soul Blueprint Premium →</a>
+            </div>
+
+            <div class="card card-full" id="testimoni-section">
+                <h3 style="text-align:center;" data-i18n="h_testi">💬 Cerita dari Jiwa yang Sudah Membaca</h3>
+                <div class="trust-stats" id="trust-stats-row"></div>
+                <div class="testi-grid" id="testi-grid"></div>
+
+                <div class="shadow-box" style="max-width:480px; margin:20px auto 0 auto; text-align:center;">
+                    <p style="font-size:0.88em; color:var(--text-main); margin-bottom:14px;" data-i18n="p_testi_cta">Sudah pernah membaca Soul Blueprint Anda? Tulis pengalaman Anda di sini dan bantu jiwa lain menemukan jalannya.</p>
+
+                    <p style="font-size:0.75em; color:var(--text-muted); margin-bottom:14px;" data-i18n="p_testi_moderasi">Testimoni Anda akan dikirim ke praktisi untuk ditinjau sebelum ditampilkan di halaman ini.</p>
+
+                    <button onclick="bukaFormTestimoni()" class="btn-secondary" style="width:auto; padding: 10px 24px;" data-i18n="btn_kirim_testi">✍️ Kirim Testimoni Saya</button>
+                </div>
+            </div>
+
+            <div class="card card-full card-gold cta-box" id="cta-premium-box" style="background: rgba(169,129,47,0.06); border: 1px dashed var(--accent-gold);">
+                <div style="text-align:center;"><span class="urgency-badge" data-i18n="badge_urgency">⏳ Slot Early Access Terbatas</span></div>
+                <h3 style="text-align: center;" data-i18n="h_premium">🔓 Soul Blueprint Premium</h3>
+                <p style="text-align:center; font-size:0.95em; line-height:1.8; color:var(--text-main); max-width:560px; margin:0 auto;" data-i18n="p_premium_intro">Yang baru saja Anda baca hanyalah gerbang awal. Soul Blueprint Premium akan mengajak Anda menyusuri keseluruhan koordinat jiwa secara utuh, mulai dari identitas terdalam, pola leluhur, Samaya Jiwa, Sangkala Jiwa, potensi, momentum kehidupan, hingga ritual penyelarasan yang disusun secara personal.</p>
+
+                <div class="shadow-box" style="margin-top:20px; text-align:left; max-width:480px; margin-left:auto; margin-right:auto;">
+                    <p style="font-size:0.85em; color:var(--text-muted); margin-bottom:10px; text-align:center;" data-i18n="p_daftar_isi">Daftar Isi Lengkap</p>
+                    <ul style="font-size:0.9em; color:var(--text-main); line-height:2; list-style:none; padding-left:0; margin:0;">
+                        <li data-i18n="h_sec1_short">👑 Analisa Jiwa & Arketipe</li>
+                        <li data-i18n="h_sec2_short">🔗 Elemen & Wacakan Prana Sangkala</li>
+                        <li data-i18n="h_sec3_short">📊 Peta Energi Tubuh</li>
+                        <li data-i18n="h_sec4_short">🕉 Mandala Body Scanning</li>
+                        <li data-i18n="h_sec5_short">⚔ Benturan Jiwa & Fase Kehidupan</li>
+                        <li data-i18n="h_sec6_short">🌿 Pola Garis Leluhur</li>
+                        <li data-i18n="h_sec7_short">✨ Samaya Jiwa</li>
+                        <li data-i18n="h_sec8_short">🌑 Sangkala Jiwa</li>
+                        <li data-i18n="h_sec9_short">💰 Potensi Jiwa & Rezeki</li>
+                        <li data-i18n="h_sec10_short">🕰 Momentum Jiwa (Kala Hita)</li>
+                        <li data-i18n="h_sec11_short">🪷 Ritual Penyelarasan & Sankalpa Personal</li>
+                    </ul>
+                </div>
+
+                <p style="text-align: center; margin-top:20px;">
+                    <span style="color:var(--text-muted); font-size:0.95em; text-decoration: line-through;">$99</span>
+                    <span style="color:var(--accent-clay); font-size:1.15em; font-weight:700; margin-left:8px;">$<span id="harga-premium">77</span></span><br>
+                    <span style="color:var(--accent-gold); font-size:0.78em; letter-spacing:0.5px; text-transform:uppercase; font-weight:600;" data-i18n="p_early_access">Harga Early Access</span><br>
+                    <span style="color:var(--text-muted); font-size:0.75em;" data-i18n="p_early_access_note">Berlaku sampai akhir bulan ini. Setelahnya kembali ke harga normal $99.</span>
+                </p>
+
+                <div class="shadow-box" style="margin-top:10px; text-align:left;">
+                    <p style="font-size:0.9em; margin-bottom:8px;"><strong data-i18n="p_langkah_pesan">Langkah pemesanan:</strong></p>
+
+                    <div class="pay-tabs">
+                        <button type="button" class="pay-tab-btn active" id="tab-btn-paypal" onclick="pilihMetodeBayar('paypal')" data-i18n-opt="tab_paypal">💳 PayPal</button>
+                        <button type="button" class="pay-tab-btn" id="tab-btn-bank" onclick="pilihMetodeBayar('bank')" data-i18n-opt="tab_bank">🏦 Bank Transfer</button>
+                    </div>
+
+                    <div class="pay-panel active" id="pay-panel-paypal">
+                        <ol style="font-size:0.88em; color:var(--text-muted); padding-left:20px; line-height:1.8; margin:10px 0 0 0;">
+                            <li><span data-i18n="li_paypal1">Send payment via PayPal to</span> <a href="https://paypal.me/SekarSoulPath" target="_blank" rel="noopener" style="color:var(--accent-clay); font-weight:700;">paypal.me/SekarSoulPath</a></li>
+                            <li data-i18n="li_order2">Fill in your name in the field below</li>
+                            <li data-i18n="li_order3">Click the WhatsApp button — a confirmation message will be automatically filled with your data</li>
+                            <li data-i18n="li_order4">The full report will be sent directly by the practitioner after payment is confirmed</li>
+                        </ol>
+                    </div>
+
+                    <div class="pay-panel" id="pay-panel-bank">
+                        <ol style="font-size:0.88em; color:var(--text-muted); padding-left:20px; line-height:1.8; margin:10px 0 0 0;">
+                            <li data-i18n="li_bank1">Transfer to:</li>
+                            <li style="list-style:none; margin-left:-20px; background:rgba(0,0,0,0.03); border-radius:8px; padding:10px 14px; margin-bottom:8px;">
+                                <strong>[BANK NAME] — [ACCOUNT NUMBER]</strong><br>
+                                <span data-i18n="li_bank_holder">Account holder:</span> [ACCOUNT HOLDER NAME]<br>
+                                <span data-i18n="li_bank_swift">SWIFT/BIC code:</span> [SWIFT CODE]
+                            </li>
+                            <li data-i18n="li_wise2">Enter the amount according to the price above, then complete the transfer</li>
+                            <li data-i18n="li_order2">Fill in your name in the field below</li>
+                            <li data-i18n="li_order3">Click the WhatsApp button — a confirmation message will be automatically filled with your data</li>
+                            <li data-i18n="li_order4">The full report will be sent directly by the practitioner after payment is confirmed</li>
+                        </ol>
+                    </div>
+                </div>
+
+
+                <div class="risk-box">
+                    🌿 <span data-i18n="p_risk_reversal">Jika setelah membaca laporan lengkap Anda merasa ada bagian yang kurang jelas atau kurang terasa "nyambung", Anda bisa menghubungi praktisi untuk sesi klarifikasi singkat — tanpa biaya tambahan. Tujuan kami adalah Anda benar-benar memahami peta jiwa Anda, bukan sekadar membaca laporan.</span>
+                </div>
+
+                <input type="text" id="nama_pemesan" placeholder="Nama Anda" style="margin-top:15px;" data-i18n-placeholder="ph_nama">
+                <button class="btn-primary" onclick="kirimWhatsapp()" data-i18n="btn_konfirmasi">📩 Konfirmasi via WhatsApp</button>
+            </div>
+
+            <div class="card card-full" style="text-align:center; border: 1px solid #3a3226; background: #2A2318;">
+                <h3 style="color:#D9C9A0;">🔥 Sankalpa Agni Alignment</h3>
+                <p style="font-size:0.95em; line-height:1.8; color:#E5D9BC; max-width:520px; margin:0 auto;" data-i18n="p_sankalpa1">Membaca koordinat jiwa hanyalah langkah pertama. Transformasi sejati terjadi saat Anda berani melepaskan pola yang selama ini menahan langkah Anda — bukan sendirian, tapi didampingi, dan dengan penuh kesadaran.</p>
+                <p style="font-size:0.9em; line-height:1.8; color:#C9BB9C; max-width:520px; margin:12px auto 0 auto; font-style:italic;" data-i18n="p_sankalpa2">Sankalpa Agni Alignment adalah ruang di mana Samaya Jiwa Anda benar-benar diselaraskan kembali — bukan sekadar dibaca, tapi dijalani.</p>
+                <button onclick="daftarSankalpa()" class="btn-primary" style="display:inline-block; margin-top:18px; width:auto; padding: 12px 30px; background-color: #D9C9A0; color:#2A2318; border:none; cursor:pointer;" data-i18n="btn_sankalpa">📧 Daftar Sesi Sankalpa Agni Alignment</button>
+                <p style="margin-top:14px;"><a href="https://sekarsoulpathjourney.pages.dev" target="_blank" style="color:#B8A888; font-size:0.85em; text-decoration:underline;" data-i18n="link_sankalpa_info">Lihat info lengkap harga & sesi lanjutan di sekarsoulpathjourney.pages.dev →</a></p>
+            </div>
+
+            <div class="card card-full" style="text-align:center; border: 1px dashed var(--accent-purple); background: rgba(107,74,115,0.06);">
+                <h3 style="color:var(--accent-purple);">💞 Ardhanaraswari Blueprint</h3>
+                <p style="font-size:0.95em; line-height:1.8; color:var(--text-main); max-width:520px; margin:0 auto;" data-i18n="p_ardhana1">Selain koordinat jiwa Anda sendiri, ada satu ruang lagi yang bisa Anda telusuri: koordinat jiwa Anda bersama pasangan. Ardhanaraswari Blueprint membaca peta kecocokan, dinamika, dan pelajaran spiritual dalam sebuah hubungan — sisi lain dari perjalanan yang sama.</p>
+                <p style="font-size:0.9em; line-height:1.8; color:var(--text-muted); max-width:520px; margin:12px auto 0 auto; font-style:italic;" data-i18n="p_ardhana2">Cocok bagi Anda yang ingin memahami relasi lebih dalam — sebagai pasangan, maupun sebagai langkah sebelum melangkah bersama.</p>
+                <a href="https://ardhanaraswari.pages.dev/" target="_blank" class="btn-primary" style="display:inline-block; margin-top:18px; width:auto; padding: 12px 30px; background-color: var(--accent-purple); text-decoration:none;" data-i18n="btn_ardhana">💞 Lihat Ardhanaraswari Blueprint</a>
+                <p style="margin-top:14px;"><a href="https://ardhanaraswari.pages.dev/" target="_blank" style="color:var(--accent-purple); font-size:0.85em; text-decoration:underline;" data-i18n="link_ardhana_info">Baca peta kecocokan &amp; kedinamisan Anda bersama pasangan di ardhanaraswari.pages.dev →</a></p>
+            </div>
+
+            <div style="text-align:center; padding: 30px 15px 10px 15px;">
+                <p style="font-size:0.85em; color: var(--text-muted); line-height:1.8; margin:0;" data-i18n="p_footer1">Prana Sangkala adalah bagian dari <strong style="color:var(--accent-clay);">Sekar SoulPath Journey</strong><br>di bawah naungan <strong style="color:var(--accent-clay);">Mandala Samaya Bujangga</strong></p>
+                <p style="font-size:0.75em; color: var(--accent-gold); letter-spacing:1.5px; text-transform:uppercase; font-style:italic; margin-top:10px;" data-i18n="tagline">Peta Koordinat Jiwa dalam Ruang dan Waktu</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Status bahasa aktif (harus dideklarasikan paling awal karena dipakai oleh
+        // fungsi-fungsi yang dipanggil langsung saat tabel/database dibangun di bawah)
+        let currentLang = "en";
+
+        // ===== TABEL PARARASAN RESMI (acuan buku, watak dihitung dari Saptawara x Pancawara) =====
+        // ===== MAKNA "LAKU" (bagian pertama nama) - watak inti/jiwa, bahasa sederhana =====
+        const dbMaknaLaku = {
+            "Laku Pandita Sakti": "Wataknya seperti pendeta yang sakti: cerdas, berwibawa, dan dipercaya banyak orang. Biasanya berbakat memimpin atau jadi tempat orang lain bertanya nasihat. Sisi yang perlu dijaga: kebiasaan tidur terlalu larut malam.",
+            "Laku Bulan": "Wataknya seperti bulan: lembut, banyak pikiran, dan penuh perasaan. Berbudi halus dan biasanya disukai lawan jenis. Sisi yang perlu dijaga: agak pemalas dan suka menunda-nunda.",
+            "Laku Kembang": "Wataknya seperti bunga: berwarna-warni dan menarik perhatian. Mudah disukai, berguna bagi banyak orang, dan sering dipuji. Sisi yang perlu dijaga: hidupnya cenderung sering berpindah-pindah, baik tempat, pekerjaan, maupun minat.",
+            "Laku Angin": "Wataknya seperti angin: gampang berubah pikiran, tidak suka diam di satu tempat, dan senang kebebasan tanpa terikat. Cepat berpikir, pandai bicara, dan pintar mencari nafkah. Sisi yang perlu dijaga: susah betah lama di satu tempat atau pekerjaan.",
+            "Laku Bintang": "Wataknya seperti bintang di langit: berwibawa, kuat pendiriannya, dan dihormati banyak orang. Berkarisma dan disegani, cocok jadi panutan atau sosok yang dituakan.",
+            "Laku Bumi": "Wataknya seperti bumi: jadi tempat berpijak, sabar, dan setia. Suka menyimpan rahasia orang lain, dermawan, dan penuh harapan. Sisi yang perlu dijaga: kadang terlalu banyak menahan beban sendirian tanpa bicara ke orang lain.",
+            "Laku Air": "Wataknya seperti air: memberi kehidupan, sejuk, dan menyejukkan orang di sekitarnya. Berbudi luhur, banyak akal, dan suka menolong. Sisi yang perlu dijaga: kadang terlalu lembek atau mudah dimanfaatkan karena terlalu baik.",
+            "Laku Surya": "Wataknya seperti matahari: berjiwa pemimpin, berwibawa, dan jadi sumber terang bagi sekitarnya. Sopan, lembut tapi tegas saat perlu, suka memberi, pemaaf, dan bijaksana.",
+            "Lakuning Gni Agung": "Wataknya seperti api besar: sangat berapi-api, cepat tersulut emosi, tapi juga cepat bertindak dan berani mengambil risiko. Berterus terang dan tidak mau dianggap salah. Sisi yang perlu dijaga: perlu belajar mengendalikan amarah supaya tidak 'membakar' diri sendiri atau orang di sekitarnya."
+        };
+
+        // ===== MAKNA "PENGIKAT NASIB" (bagian kedua nama) - arah jalan hidup, bahasa sederhana =====
+        // Catatan: makna bagian ini adalah interpretasi umum dari istilahnya; boleh disesuaikan lagi dengan penjelasan di buku acuan bila berbeda.
+        const dbMaknaPengikat = {
+            "Sumur Sinaba": "Artinya 'sumur yang didatangi banyak orang' — orang ini biasanya jadi tempat orang lain datang untuk minta bantuan, nasihat, atau pertolongan. Rejekinya sering datang lewat orang lain yang membutuhkan jasa atau kemampuannya.",
+            "Satria Wibawa": "Artinya 'satria yang berwibawa' — orang ini punya aura kepemimpinan dan dihormati, meski tidak selalu tampil di depan. Wibawanya membuat orang lain segan dan mempercayainya.",
+            "Bumi Kapetak": "Artinya 'tanah yang terbagi petak-petak' — rejeki dan usahanya cenderung datang dari banyak sumber kecil yang terbagi-bagi, atau hidupnya melewati beberapa fase/babak yang cukup berbeda satu sama lain.",
+            "Tunggak Semi": "Artinya 'tunggul pohon yang bertunas kembali' — walau sering mengalami kegagalan atau titik terendah, orang ini punya kemampuan untuk bangkit dan tumbuh lagi. Hidupnya penuh siklus jatuh-bangun, namun selalu berhasil tumbuh kembali.",
+            "Lebu Katiup Angin": "Artinya 'debu yang tertiup angin' — hidupnya cenderung berpindah-pindah dan mudah terbawa keadaan atau pengaruh dari luar. Perlu usaha lebih untuk punya pendirian yang stabil dan tidak mudah terombang-ambing.",
+            "Satria Wirang": "Artinya 'satria yang pernah dipermalukan/kalah' — orang ini punya pengalaman jatuh, gagal, atau dipermalukan di masa lalu. Namun justru dari pengalaman itu ia belajar dan biasanya bangkit menjadi lebih kuat serta lebih berhati-hati di kemudian hari."
+        };
+
+        const dbMaknaLakuEN = {
+            "Laku Pandita Sakti": "Your character is like a powerful sage: intelligent, dignified, and trusted by many people. You're often gifted at leadership or become the person others come to for advice. Watch out for: a tendency to stay up too late at night.",
+            "Laku Bulan": "Your character is like the moon: gentle, thoughtful, and full of feeling. Refined in manner and usually well-liked by the opposite gender. Watch out for: being a bit lazy and prone to procrastination.",
+            "Laku Kembang": "Your character is like a flower: colorful and eye-catching. Easy to like, useful to many people, and often praised. Watch out for: a tendency to move around frequently, whether in place, work, or interests.",
+            "Laku Angin": "Your character is like the wind: quick to change your mind, dislike staying in one place, and enjoy freedom without being tied down. Quick-thinking, good at talking, and skilled at earning a living. Watch out for: difficulty staying long in one place or job.",
+            "Laku Bintang": "Your character is like a star in the sky: dignified, strong-willed, and respected by many. Charismatic and revered, well-suited to being a role model or elder figure.",
+            "Laku Bumi": "Your character is like the earth: a foundation for others, patient, and loyal. You like keeping others' secrets, are generous, and full of hope. Watch out for: sometimes carrying too much of a burden alone without talking to others.",
+            "Laku Air": "Your character is like water: life-giving, cool, and refreshing to those around you. Virtuous, resourceful, and eager to help. Watch out for: sometimes being too soft or easily taken advantage of because you're too kind.",
+            "Laku Surya": "Your character is like the sun: a natural leader, dignified, and a source of light for those around you. Polite, gentle but firm when needed, generous, forgiving, and wise.",
+            "Lakuning Gni Agung": "Your character is like a great fire: highly passionate, quick to anger, but also quick to act and willing to take risks. Straightforward and unwilling to be seen as wrong. Watch out for: needing to learn to control your temper so it doesn't 'burn' yourself or those around you."
+        };
+
+        const dbMaknaPengikatEN = {
+            "Sumur Sinaba": "Means 'a well visited by many' — this person tends to become the one others come to for help, advice, or assistance. Fortune often arrives through others who need their services or abilities.",
+            "Satria Wibawa": "Means 'a dignified knight' — this person has a leadership aura and is respected, even if not always in the spotlight. Their presence earns others' deference and trust.",
+            "Bumi Kapetak": "Means 'land divided into plots' — fortune and effort tend to come from many small, divided sources, or life passes through several fairly distinct phases/chapters.",
+            "Tunggak Semi": "Means 'a tree stump that sprouts again' — despite frequent failures or low points, this person has the ability to rise and grow again. Life is full of ups and downs, but they always manage to grow back.",
+            "Lebu Katiup Angin": "Means 'dust blown by the wind' — life tends to move around and be easily swept along by circumstances or outside influence. Extra effort is needed to build a stable, unshakeable stance.",
+            "Satria Wirang": "Means 'a knight who was once shamed/defeated' — this person has experienced falling, failing, or being humiliated in the past. But from that experience they learn and usually rise stronger and more careful afterward."
+        };
+
+        function buatSifatPararasan(namaLaku, namaPengikat) {
+            if (typeof currentLang !== "undefined" && currentLang === "en") {
+                const m1e = dbMaknaLakuEN[namaLaku] || "";
+                const m2e = dbMaknaPengikatEN[namaPengikat] || "";
+                return `${m1e} In addition, their life path carries the element of "${namaPengikat}": ${m2e}`;
+            }
+            const m1 = dbMaknaLaku[namaLaku] || "";
+            const m2 = dbMaknaPengikat[namaPengikat] || "";
+            return `${m1} Selain itu, bekal jalan hidupnya membawa unsur "${namaPengikat}": ${m2}`;
+        }
+
+        // ===== TABEL PARARASAN/PALELINTANGAN RESMI (acuan final dari buku, per kombinasi Hari x Pasaran) =====
+        const matrixPararasanRaw = {
+            "Redite":    { "Umanis": ["Laku Pandita Sakti", "Sumur Sinaba", 10], "Paing": ["Laku Bulan", "Satria Wibawa", 14], "Pon": ["Laku Kembang", "Bumi Kapetak", 12], "Wage": ["Laku Angin", "Tunggak Semi", 9], "Kliwon": ["Laku Bintang", "Lebu Katiup Angin", 13] },
+            "Soma":      { "Umanis": ["Laku Angin", "Tunggak Semi", 9], "Paing": ["Laku Bintang", "Satria Wibawa", 13], "Pon": ["Laku Kembang", "Sumur Sinaba", 11], "Wage": ["Laku Bumi", "Satria Wibawa", 8], "Kliwon": ["Laku Kembang", "Satria Wirang", 12] },
+            "Anggara":   { "Umanis": ["Laku Bumi", "Bumi Kapetak", 8], "Paing": ["Laku Kembang", "Satria Wirang", 12], "Pon": ["Laku Pandita Sakti", "Sumur Sinaba", 10], "Wage": ["Laku Bumi", "Lebu Katiup Angin", 7], "Kliwon": ["Laku Bulan", "Tunggak Semi", 11] },
+            "Buda":      { "Umanis": ["Laku Kembang", "Sumur Sinaba", 12], "Paing": ["Laku Air", "Satria Wibawa", 16], "Pon": ["Laku Bulan", "Satria Wibawa", 14], "Wage": ["Laku Bumi", "Satria Wibawa", 11], "Kliwon": ["Laku Surya", "Lebu Katiup Angin", 15] },
+            "Wraspati":  { "Umanis": ["Laku Bintang", "Satria Wibawa", 13], "Paing": ["Laku Bumi", "Satria Wibawa", 17], "Pon": ["Laku Surya", "Sumur Sinaba", 15], "Wage": ["Laku Kembang", "Bumi Kapetak", 12], "Kliwon": ["Laku Air", "Bumi Kapetak", 16] },
+            "Sukra":     { "Umanis": ["Laku Bulan", "Satria Wirang", 11], "Paing": ["Laku Surya", "Lebu Katiup Angin", 15], "Pon": ["Laku Bintang", "Bumi Kapetak", 13], "Wage": ["Laku Pandita Sakti", "Sumur Sinaba", 10], "Kliwon": ["Laku Bulan", "Tunggak Semi", 14] },
+            "Saniscara": { "Umanis": ["Laku Bulan", "Sumur Sinaba", 14], "Paing": ["Lakuning Gni Agung", "Satria Wibawa", 18], "Pon": ["Laku Air", "Lebu Katiup Angin", 16], "Wage": ["Laku Bintang", "Satria Wirang", 13], "Kliwon": ["Laku Bumi", "Satria Wibawa", 17] }
+        };
+
+        const matrixPararasan = {};
+        for (const hari in matrixPararasanRaw) {
+            matrixPararasan[hari] = {};
+            for (const pasaran in matrixPararasanRaw[hari]) {
+                const [namaLaku, namaPengikat, urip] = matrixPararasanRaw[hari][pasaran];
+                matrixPararasan[hari][pasaran] = {
+                    nama: `${namaLaku} / ${namaPengikat}`,
+                    namaLaku: namaLaku,
+                    namaPengikat: namaPengikat,
+                    urip: urip,
+                    sifat: buatSifatPararasan(namaLaku, namaPengikat)
+                };
+            }
+        }
+
+        const prefixArchetype = {
+            "1": "Perintis", "2": "Pendamai", "3": "Pengekspresi", "4": "Pembangun", "5": "Petualang", 
+            "6": "Pengasuh", "7": "Pemikir", "8": "Penggerak", "9": "Jiwa Tua", 
+            "11": "Penuntun Intuisi", "22": "Pembangun Visi", "33": "Penyembuh Hati"
+        };
+
+        const dbLifePath = {
+            "1": { arch: "Sang Perintis yang Mandiri", light: "Sangat mandiri, punya inisiatif tinggi, berani mengambil risiko, dan punya jiwa kepemimpinan alami.", shadow: "Sering memaksakan kehendak, gengsi minta tolong meskipun kesulitan, dan terlalu keras pada diri sendiri karena takut gagal.", kuat: "Area Perut (Keberanian & Ego)", lemah: "Area Tulang Belakang Bawah (Rasa Aman)", gejala: "Sering migrain, kepala pusing, atau bahu/tengkuk terasa kaku.", eft: "Ketuk bagian samping telapak tangan (Karate Chop).", samaya: "Secara tak sadar, Anda punya pola 'lebih baik kerjakan sendiri daripada kecewa sama orang lain'. Ini membuat Anda capek sendiri.", fase: "Belajar bahwa meminta tolong itu bukan berarti lemah. Anda tidak harus menanggung semuanya sendirian.", sankalpa: "Mulai hari ini, aku mengizinkan diriku untuk beristirahat. Aku lepaskan beban untuk mengatur segala hal sendirian. Aku aman, aku tenang, dan aku percaya alam semesta mendukung langkahku.", peta: { juang: 90, emosi: 50, stabilitas: 60, intuisi: 65, ekspresi: 85, mental: 80 } },
+            "2": { arch: "Sang Pendamai & Sahabat Setia", light: "Punya empati yang luar biasa, pendengar yang baik, sabar, dan selalu menjaga keharmonisan.", shadow: "People-pleaser (tidak enakan), susah bilang 'TIDAK', gampang baper, dan sering mengorbankan perasaan sendiri.", kuat: "Area Bawah Perut (Perasaan)", lemah: "Area Tenggorokan (Komunikasi)", gejala: "Radang tenggorokan, atau suara gampang habis karena menahan ucapan.", eft: "Tepuk pelan area tulang selangka (bawah leher).", samaya: "Anda merasa harga diri bergantung pada seberapa banyak bisa menyenangkan orang lain.", fase: "Belajar menetapkan batasan. Anda berhak bilang 'Tidak' tanpa merasa bersalah.", sankalpa: "Aku berharga apa adanya, bukan karena apa yang bisa kuberikan untuk orang lain. Mulai hari ini, aku berani berkata tidak demi menjaga kedamaian jiwaku sendiri tanpa rasa bersalah.", peta: { juang: 55, emosi: 85, stabilitas: 75, intuisi: 85, ekspresi: 60, mental: 65 } },
+            "3": { arch: "Sang Pengekspresi yang Ceria", light: "Sangat ekspresif, pandai bicara, humoris, kreatif, dan optimis.", shadow: "Gampang bosan, kurang fokus, dan sering membesar-besarkan masalah (dramatis).", kuat: "Area Tenggorokan (Komunikasi)", lemah: "Area Kaki/Akar (Fokus)", gejala: "Suara serak, atau gampang gelisah/fidgeting.", eft: "Ketuk ringan ujung dalam alis mata.", samaya: "Sering merasa takut bakat atau suara Anda tidak didengar.", fase: "Belajar menyelesaikan apa yang sudah dimulai. Kurangi distraksi, fokus pada satu tujuan.", sankalpa: "Hati dan pikiranku selaras dan tenang. Aku lepaskan drama emosi yang melelahkan jiwaku. Aku memilih untuk fokus menyelesaikan karya-karya baik dalam hidupku.", peta: { juang: 70, emosi: 70, stabilitas: 55, intuisi: 70, ekspresi: 95, mental: 60 } },
+            "4": { arch: "Sang Pembangun yang Disiplin", light: "Sangat bisa diandalkan, disiplin, teliti, pekerja keras, dan pandai mengatur rencana.", shadow: "Terlalu kaku, workaholic (gila kerja), susah santai, dan panik jika rencana berubah.", kuat: "Area Kaki/Akar (Stabilitas)", lemah: "Area Dada/Jantung (Keterbukaan Emosi)", gejala: "Sakit punggung bawah, otot sering kaku.", eft: "Ketuk tulang selangka perlahan.", samaya: "Anda merasa kalau tidak bekerja keras dan mengatur semuanya, dunia akan berantakan.", fase: "Belajar melepaskan kendali berlebih. Nikmati hidup, jangan semuanya dijadikan pekerjaan.", sankalpa: "Aku mengalir bersama perubahan hidup yang baik. Aku lepaskan keinginan mengontrol segalanya yang di luar kuasaku. Aku izinkan hatiku terbuka untuk menerima kebahagiaan yang santai.", peta: { juang: 85, emosi: 50, stabilitas: 90, intuisi: 55, ekspresi: 55, mental: 90 } },
+            "5": { arch: "Sang Petualang yang Bebas", light: "Gampang beradaptasi, menyukai hal baru, serba bisa, dan berpikiran luwes.", shadow: "Cepat bosan, bertindak ceroboh, dan takut komitmen yang mengekang.", kuat: "Area Perut Tengah (Adaptasi)", lemah: "Area Ubun-ubun (Ketenangan Batin)", gejala: "Masalah asam lambung (maag), gampang masuk angin.", eft: "Ketuk bagian bawah mata.", samaya: "Punya ketakutan kehilangan kebebasan jika menuruti aturan.", fase: "Belajar bahwa komitmen bukanlah penjara, melainkan fondasi agar Anda bisa terbang lebih tinggi.", sankalpa: "Ketenangan sejati ada di dalam batinku, bukan di tempat luar yang baru. Aku berkomitmen pada proses bertumbuhku, karena di sinilah kebebasan jiwaku yang murni berada.", peta: { juang: 80, emosi: 65, stabilitas: 50, intuisi: 75, ekspresi: 85, mental: 70 } },
+            "6": { arch: "Sang Pengasuh Penuh Cinta", light: "Sangat keibuan/kebapakan, penyayang, melindungi keluarga, dan hangat.", shadow: "Sering ikut campur urusan orang lain karena khawatir, gampang merasa bersalah, dan berkorban berlebihan.", kuat: "Area Dada/Jantung (Cinta Kasih)", lemah: "Area Perut Tengah (Batas Diri)", gejala: "Dada terasa sesak saat stres, pundak berat.", eft: "Tepuk ringan bagian tengah dada.", samaya: "Anda merasa berharga jika dibutuhkan dan bisa merawat orang lain.", fase: "Belajar mencintai dan merawat diri Anda sendiri terlebih dahulu.", sankalpa: "Gelas jiwaku kini terisi penuh oleh cinta untuk diriku sendiri. Aku lepaskan kecemasan akan hidup orang lain. Aku percaya bahwa setiap jiwa punya jalannya dan mereka aman.", peta: { juang: 65, emosi: 90, stabilitas: 80, intuisi: 70, ekspresi: 70, mental: 75 } },
+            "7": { arch: "Sang Pemikir & Pengamat", light: "Analitis, pemikir tajam, suka hal spiritual atau ilmu mendalam, dan intuisi bagus.", shadow: "Suka menyendiri berlebihan, overthinking, sering curiga, dan susah membuka hati.", kuat: "Area Dahi/Antara Alis (Fokus)", lemah: "Area Bawah Perut (Emosi)", gejala: "Sering sakit kepala bagian depan, susah tidur (insomnia).", eft: "Ketuk bagian samping mata luar.", samaya: "Anda merasa lebih aman jika bersembunyi di balik pikiran Anda sendiri.", fase: "Belajar menyeimbangkan logika dan perasaan. Jangan takut bersosialisasi.", sankalpa: "Aku istirahatkan pikiran liarku yang melelahkan. Aku turunkan kesadaranku dari kepala menuju kedalaman hati. Aku aman untuk percaya, terbuka, dan menerima kedamaian dunia.", peta: { juang: 60, emosi: 60, stabilitas: 75, intuisi: 95, ekspresi: 50, mental: 85 } },
+            "8": { arch: "Sang Penggerak Kelimpahan", light: "Insting bisnis bagus, pekerja keras, ambisius, berwibawa, dan jago eksekusi.", shadow: "Gila kendali (bossy), fokus pada materi/uang, dan lupa waktu untuk keluarga.", kuat: "Area Perut Bawah & Kaki (Aksi)", lemah: "Area Dada/ Jantung (Kasih Sayang)", gejala: "Tekanan darah tinggi, leher kaku, kelelahan fisik.", eft: "Ketuk bagian Karate Chop di telapak tangan.", samaya: "Punya trauma kekurangan uang, merasa harus memegang kendali agar aman.", fase: "Belajar membedakan harga diri dan saldo tabungan. Kelimpahan sejati ada di ketenangan batin.", sankalpa: "Harga diriku tidak ditentukan oleh pencapaian kebendaan atau materi. Jiwaku sudah kaya, berkecukupan, dan berkelimpahan sejak lahir. Aku tenang karena rezekiku takkan tertukar.", peta: { juang: 95, emosi: 55, stabilitas: 70, intuisi: 60, ekspresi: 75, mental: 90 } },
+            "9": { arch: "Sang Jiwa Tua yang Dermawan", light: "Ikhlas, suka menolong tanpa pamrih, pemahaman hidup luas, dan peduli kemanusiaan.", shadow: "Gampang kecewa, susah melupakan masa lalu, dan kadang merasa paling benar spiritual.", kuat: "Area Ubun-ubun (Kesadaran)", lemah: "Area Telapak Kaki (Membumi)", gejala: "Sering merasa lemas tak bertenaga, sedih tanpa sebab.", eft: "Ketuk titik di bawah hidung/atas bibir.", samaya: "Anda merasa memikul beban karma keluarga atau orang sekitar.", fase: "Belajar melepaskan luka masa lalu. Anda tidak harus menyelamatkan semua orang.", sankalpa: "Aku lepaskan penyesalan, trauma, dan memori usang masa lalu yang mengikat kaki jiwaku. Hari ini aku bebas melangkah dengan penuh keikhlasan, kedamaian, dan pengampunan sejati.", peta: { juang: 70, emosi: 80, stabilitas: 65, intuisi: 90, ekspresi: 80, mental: 75 } },
+            "11": { arch: "Intuisi Tajam (Master Number 11)", light: "Firasat (feeling) sangat jitu, inspiratif, dan bisa membaca niat orang.", shadow: "Mudah menyerap energi negatif (over-sensitif), gampang panik, dan lelah di keramaian.", kuat: "Area Dahi/Mata Ketiga (Firasat)", lemah: "Sistem Saraf Seluruh Tubuh", gejala: "Gampang berdebar, kecemasan berlebih (anxiety), susah tidur kronis.", eft: "Ketuk ringan di atas ubun-ubun kepala.", samaya: "Sering merasa terasing atau 'berbeda', sehingga menekan firasat sendiri.", fase: "Belajar membedakan emosi Anda dan emosi orang lain yang terserap. Lindungi energi Anda.", sankalpa: "Tubuh dan energiku terlindungi oleh cahaya suci. Aku kembalikan segala emosi negatif yang kuserap kepada semesta untuk dilebur. Jiwaku kuat, stabil, bertenaga, dan damai.", peta: { juang: 65, emosi: 85, stabilitas: 55, intuisi: 98, ekspresi: 75, mental: 70 } },
+            "22": { arch: "Pembangun Ide Besar (Master Number 22)", light: "Visi masa depan luar biasa dengan langkah praktis. Pemimpin proyek besar.", shadow: "Frustrasi jika idenya terhambat, terlalu menekan diri sendiri.", kuat: "Area Dada & Kaki (Visi dan Realita)", lemah: "Sistem Tulang & Persendian", gejala: "Sering pegal parah di area punggung dan tulang belakang.", eft: "Ketuk area bawah dada samping.", samaya: "Merasa punya 'tugas besar' dalam hidup yang membebani.", fase: "Belajar bersabar dengan proses nyata. Hal besar butuh waktu dibangun.", sankalpa: "Aku melangkah perlahan namun pasti bersama sang waktu. Aku tidak harus menyelesaikan semua target besar hari ini. Semesta menuntun jalanku dengan ritme yang sempurna dan seimbang.", peta: { juang: 95, emosi: 50, stabilitas: 85, intuisi: 75, ekspresi: 70, mental: 95 } },
+            "33": { arch: "Penyembuh Hati & Kasih Sayang (Master Number 33)", light: "Energi damai, bijaksana, penuh kasih tanpa pamrih, penyembuh alami.", shadow: "Sering jadi tempat 'sampah emosi' orang sampai burnout, lupa kebahagiaan sendiri.", kuat: "Area Dada & Ubun-ubun (Cinta & Spirit)", lemah: "Area Akar/Kaki (Ketahanan Fisik)", gejala: "Burnout parah, bahu seperti memikul beban berat.", eft: "Tepuk lembut bagian tengah dada.", samaya: "Rasa tanggung jawab berlebihan untuk menyembuhkan penderitaan orang lain.", fase: "Belajar bahwa Anda hanya bisa menyembuhkan orang lain kalau 'gelas' kebahagiaan Anda sendiri sudah penuh.", sankalpa: "Aku utamakan menyembuhkan dan menyayangi diriku sendiri terlebih dahulu. Aku adalah tabib bagi batinku. Saat aku damai dan bahagia, di sanalah energi penyembuhanku bekerja otomatis.", peta: { juang: 60, emosi: 95, stabilitas: 75, intuisi: 90, ekspresi: 80, mental: 80 } },
+            "default": { arch: "Jiwa yang Bertumbuh", light: "Memiliki kepekaan rasa, kemauan belajar tinggi.", shadow: "Kadang bimbang mengambil keputusan batin.", kuat: "Area Dada", lemah: "Area Kepala", gejala: "Pusing berulang.", eft: "Ketuk dada tengah.", samaya: "Pola emosi melingkar.", fase: "Konsistensi.", sankalpa: "Aku mencintai diriku seutuhnya. Hari ini aku memilih untuk tenang.", peta: { juang: 70, emosi: 70, stabilitas: 70, intuisi: 70, ekspresi: 70, mental: 70 } }
+        };
+
+        const dbPara = {
+            "Laku Pandita Sakti": { salt: "Garam Varian Akasa (Penyelaras Kebijaksanaan & Pikiran)" },
+            "Laku Bulan": { salt: "Garam Varian Amrtha (Penenang Kegelisahan Batin)" },
+            "Laku Kembang": { salt: "Garam Varian Amrtha (Penyelaras Harmoni Jiwa)" },
+            "Laku Angin": { salt: "Garam Varian Akasa (Pelepas Beban Pundak & Stres)" },
+            "Laku Bintang": { salt: "Garam Varian Akasa (Pelepas Blokir Energi Atas)" },
+            "Laku Bumi": { salt: "Garam Varian Pertiwi (Grounding & Proteksi Diri)" },
+            "Laku Air": { salt: "Garam Varian Amrtha (Aliran Pembersih Rasa)" },
+            "Laku Surya": { salt: "Garam Varian Agni (Penyeimbang Ego & Emosi)" },
+            "Lakuning Gni Agung": { salt: "Garam Varian Agni (Pelebur Amarah Besar & Karma Negatif)" },
+            "default": { salt: "Garam Varian Amrtha (Keseimbangan Energi)" }
+        };
+
+        const dbSaptawara = {
+            "Redite": "Membawa energi Matahari (Surya) — jiwa yang hangat, punya jiwa kepemimpinan alami, dan senang jadi pusat perhatian. Ego cukup kuat, sehingga perlu belajar rendah hati dan mendengarkan orang lain.",
+            "Soma": "Membawa energi Bulan (Candra) — perasa, penuh empati, dan intuitif. Mood mudah berubah seperti fase bulan, sehingga penting menjaga kestabilan emosi dan pola istirahat.",
+            "Anggara": "Membawa energi Mars/Api — berani, tegas, dan penuh daya juang. Berpotensi cepat naik darah kalau dipicu, jadi perlu belajar menyalurkan energi agresif secara positif.",
+            "Buda": "Membawa energi Merkurius — cerdas, komunikatif, dan cepat belajar hal baru. Pikiran sering dipenuhi banyak ide, sehingga rawan overthinking bila tidak disalurkan lewat tulisan/bicara.",
+            "Wraspati": "Membawa energi Jupiter — bijaksana, suka berbagi ilmu, dan berjiwa besar. Cenderung idealis dan mudah kecewa jika realita tak sesuai harapan.",
+            "Sukra": "Membawa energi Venus — menyukai keindahan, harmoni, dan hubungan yang hangat. Sangat menghargai kenyamanan, namun perlu waspada terhadap sikap terlalu mengalah demi menghindari konflik.",
+            "Saniscara": "Membawa energi Saturnus — disiplin, tahan uji, dan pekerja keras. Cenderung keras pada diri sendiri, sehingga perlu belajar memberi ruang istirahat dan bersikap lebih lembut ke diri sendiri."
+        };
+
+        const dbPancawara = {
+            "Umanis": "Energi manis dan menyenangkan — mudah disukai, ramah, dan pembawa suasana ceria di lingkungan sekitarnya.",
+            "Paing": "Energi yang kuat dan cukup dominan — punya semangat tinggi dan cenderung ekspresif, namun perlu belajar mengelola emosi supaya tidak mudah tersulut.",
+            "Pon": "Energi yang stabil dan bersahaja — tenang dalam bertindak, dapat diandalkan, dan cenderung berpikir realistis sebelum mengambil keputusan.",
+            "Wage": "Energi yang tersembunyi dan dalam — banyak menyimpan pemikiran sendiri, terkesan pendiam namun sebenarnya penuh pertimbangan batin.",
+            "Kliwon": "Energi spiritual yang kuat — sangat peka terhadap hal-hal niskala/gaib, intuitif, namun perlu menjaga agar tidak terlalu mudah menyerap energi dari lingkungan sekitar."
+        };
+
+        const dbPersonalYear = {
+            1: { title: "Awal Baru & Kemandirian", desc: "Tahun untuk memulai proyek baru, membangun kemandirian, dan mengambil inisiatif. Momentum bagus untuk memulai hal yang lama tertunda, tapi hindari terlalu terburu-buru." },
+            2: { title: "Kesabaran & Kolaborasi", desc: "Tahun untuk membangun hubungan, kesabaran, dan kerja sama. Hasil datang lebih pelan, fokus pada penguatan relasi dan komunikasi daripada memaksakan hasil cepat." },
+            3: { title: "Ekspresi & Kegembiraan", desc: "Tahun yang cocok untuk kreativitas, sosialisasi, dan mengekspresikan diri. Energi cenderung ringan dan menyenangkan, namun jaga fokus agar tidak terlalu banyak distraksi." },
+            4: { title: "Kerja Keras & Fondasi", desc: "Tahun untuk membangun fondasi yang kokoh lewat disiplin dan kerja keras. Hasilnya tidak instan, tapi apa yang dibangun tahun ini akan jadi pijakan jangka panjang." },
+            5: { title: "Perubahan & Kebebasan", desc: "Tahun penuh perubahan, kejutan, dan pergerakan. Sangat baik untuk keluar dari zona nyaman, namun perlu tetap punya pegangan agar tidak terombang-ambing." },
+            6: { title: "Tanggung Jawab & Keluarga", desc: "Tahun yang berfokus pada keluarga, hubungan, dan tanggung jawab domestik/emosional. Banyak energi tercurah untuk merawat orang lain, jangan lupa merawat diri sendiri juga." },
+            7: { title: "Refleksi & Spiritualitas", desc: "Tahun untuk introspeksi, memperdalam ilmu, dan mendekat pada sisi spiritual. Bukan tahun untuk ekspansi besar-besaran, melainkan untuk memahami diri lebih dalam." },
+            8: { title: "Kelimpahan & Pencapaian", desc: "Tahun yang berpotensi membawa hasil dari kerja keras sebelumnya, terutama soal karier dan finansial. Waktu yang baik untuk ekspansi, tapi tetap jaga keseimbangan hidup." },
+            9: { title: "Penutupan & Pelepasan", desc: "Tahun untuk menutup satu siklus, melepaskan yang tak lagi relevan, dan bersiap menyambut siklus baru di tahun berikutnya. Cocok untuk membersihkan diri (decluttering) fisik maupun batin." }
+        };
+
+        function hitungPersonalYear(day, month) {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            function sumAll(n) {
+                let s = 0;
+                String(n).split("").forEach(d => { if (!isNaN(parseInt(d,10))) s += parseInt(d,10); });
+                return s;
+            }
+            let total = sumAll(day) + sumAll(month) + sumAll(currentYear);
+            while (total > 9) { total = sumAll(total); }
+            return { year: currentYear, num: total };
+        }
+
+        // ===== JEMBATAN INTEGRASI: Numerologi <-> Pawukon lewat bahasa Elemen =====
+        // Setiap Karakter Inti (Numerologi) dan setiap Wuku (Pawukon) diterjemahkan
+        // ke satu dari 5 elemen yang sama, agar keduanya bisa benar-benar "berinteraksi"
+        // lewat satu matriks dinamika, bukan cuma disebut berdampingan.
+        const dbElemenLifePath = {
+            "1": "Api", "4": "Api", "8": "Api", "22": "Api",
+            "2": "Angin", "3": "Angin", "6": "Angin", "33": "Angin",
+            "5": "Air", "7": "Air", "9": "Air", "11": "Air"
+        };
+
+        // Data unsur Wuku berikut sesuai ajaran Pawukon yang diberikan langsung oleh pemilik aplikasi.
+        const dbElemenWuku = {
+            "Sinta": "Angin", "Tolu": "Angin", "Julungwangi": "Angin", "Langkir": "Angin",
+            "Krulut": "Angin", "Matal": "Angin", "Bala": "Angin", "Dukut": "Angin",
+            "Gumbreg": "Api", "Wariga": "Api", "Warigadian": "Api", "Medangsia": "Api",
+            "Pujut": "Api", "Pahang": "Api", "Uye": "Api", "Menail": "Api",
+            "Prangbakat": "Api", "Watugunung": "Api",
+            "Landep": "Air", "Ukir": "Air", "Kulantir": "Air", "Sungsang": "Air",
+            "Dungulan": "Air", "Kuningan": "Air", "Merakih": "Air", "Tambir": "Air",
+            "Medangkungan": "Air", "Ugu": "Air", "Wayang": "Air", "Kelawu": "Air",
+            "default": "Api"
+        };
+
+        function kunciElemen(a, b) { return [a, b].sort().join("_"); }
+
+        const dbDinamikaElemen = {
+            "Api_Api": "Karakter Inti dan Wuku kelahiran Anda sama-sama unsur <strong>Api</strong> — kekuatan batin, integritas, dan daya kepemimpinan Anda sangat dominan dan berlipat ganda. Fondasi diri Anda sangat kokoh dan sulit digoyahkan, namun risikonya adalah menjadi terlalu keras/kaku pada diri sendiri maupun orang lain. Latih kelenturan hati agar kekuatan ini menjadi pelindung, bukan tembok yang mengisolasi diri.",
+            "Angin_Angin": "Karakter Inti dan Wuku kelahiran Anda sama-sama unsur <strong>Angin</strong> — sisi relasional, ekspresif, dan kehangatan sosial Anda sangat menonjol dan berlipat ganda. Anda sangat mudah membangun kedekatan dan dicintai lingkungan sekitar, namun risikonya adalah terlalu bergantung pada validasi orang lain atau kehilangan arah pribadi karena terlalu sering menyesuaikan diri. Latih keberanian menyuarakan kebutuhan pribadi, bukan hanya menjaga keharmonisan hubungan.",
+            "Air_Air": "Karakter Inti dan Wuku kelahiran Anda sama-sama unsur <strong>Air</strong> — ketajaman pikiran, intuisi, dan hasrat untuk terus bertumbuh sangat dominan dan berlipat ganda dalam diri Anda. Anda punya kedalaman analisis dan kepekaan batin yang tajam, namun risikonya adalah terjebak terlalu banyak berpikir (overthinking) atau gelisah karena pikiran yang tak pernah benar-benar berhenti. Latih diri untuk sesekali berhenti menganalisis dan cukup hadir merasakan momen saat ini.",
+            "Angin_Api": "Unsur <strong>Api</strong> (kekuatan & struktur) dari salah satu sisi kelahiran Anda bertemu <strong>Angin</strong> (relasi & ekspresi) dari sisi lainnya — Anda punya fondasi diri yang kuat, namun tetap mudah terhubung secara sosial dan hangat kepada orang lain. Kombinasi ini menjadikan Anda pemimpin yang dicintai, bukan cuma disegani. Namun waspadai kecenderungan menahan kebutuhan pribadi demi menjaga hubungan, sehingga struktur diri Anda bisa mulai retak diam-diam.",
+            "Air_Api": "Unsur <strong>Api</strong> (kekuatan & struktur) dari salah satu sisi kelahiran Anda berpadu dengan <strong>Air</strong> (pikiran & intuisi) dari sisi lainnya — Anda adalah sosok yang tidak hanya kuat dan berprinsip, tapi juga penuh pertimbangan matang sebelum bertindak. Kombinasi ini melahirkan pengambil keputusan yang bijaksana. Tantangannya adalah kadang terlalu lama menganalisis sebelum melangkah, sehingga momentum bisa hilang.",
+            "Air_Angin": "Unsur <strong>Angin</strong> (relasi & ekspresi) dari salah satu sisi kelahiran Anda berpadu dengan <strong>Air</strong> (pikiran & intuisi) dari sisi lainnya — Anda punya kepekaan sosial yang tinggi sekaligus kedalaman berpikir dan intuisi yang kuat. Ini bekal alami untuk menjadi penasihat, mediator, atau pendengar yang sangat baik. Namun kombinasi ini juga membuat Anda mudah menyerap dan memikirkan terlalu dalam persoalan orang lain, sehingga penting menjaga jarak batin yang sehat."
+        };
+
+        const dbWuku = {
+            "Sinta": { patri: "Mewarisi sifat tenang, tidak suka ribut, dan mengayomi.", matri: "Ada rekaman pola sering mengalah, memendam sedih, atau berkorban." },
+            "Landep": { patri: "Mewarisi pola pikir tajam, logis, dan tegas.", matri: "Menyimpan rekaman kekakuan batin, susah santai, dan gampang cemas." },
+            "Ukir": { patri: "Mewarisi bakat seni, apresiasi keindahan, dan kreativitas.", matri: "Pola emosi yang mudah berubah-ubah (mood swing) dan mencari pengakuan." },
+            "Kulantir": { patri: "Mewarisi daya juang, ulet, dan mental pantang menyerah.", matri: "Menyimpan memori kelelahan batin karena sering menjadi tulang punggung emosional." },
+            "Tolu": { patri: "Mewarisi sifat lincah, dinamis, dan mudah beradaptasi.", matri: "Pola gampang bosan dan kesulitan menetap atau berkomitmen pada satu hal." },
+            "Gumbreg": { patri: "Mewarisi daya pikat, karisma, dan rezeki yang mengalir.", matri: "Ada ketakutan akan kekurangan atau pola terlalu royal hingga lupa menabung." },
+            "Wariga": { patri: "Mewarisi keteraturan, kebijaksanaan, dan fokus pada tujuan.", matri: "Pola ingin mengontrol segala sesuatu agar aman dan takut akan ketidakpastian." },
+            "Warigadian": { patri: "Mewarisi sifat pembawa terang, penasihat, dan penolong.", matri: "Sering merasa bersalah jika tidak bisa membahagiakan semua orang (people pleaser)." },
+            "Julungwangi": { patri: "Mewarisi tutur kata yang manis, pesona, dan disukai banyak orang.", matri: "Pola menutupi luka batin dengan senyuman dan sulit menunjukkan kelemahan." },
+            "Sungsang": { patri: "Mewarisi cara pikir yang unik, out-of-the-box, dan inovatif.", matri: "Merasa sering disalahpahami atau merasa berbeda dari lingkungan keluarga." },
+            "Dungulan": { patri: "Mewarisi jiwa pemenang, keberanian, dan semangat kepemimpinan.", matri: "Menyimpan pola amarah terpendam jika egonya terluka atau diremehkan." },
+            "Kuningan": { patri: "Mewarisi intuisi spiritual yang kuat and perlindungan batin.", matri: "Pola terlalu sensitif terhadap energi lingkungan dan mudah lelah di keramaian." },
+            "Langkir": { patri: "Mewarisi sifat pemberani, pengambil risiko, dan gairah hidup tinggi.", matri: "Pola bertindak impulsif saat sedang marah atau tertekan." },
+            "Medangsia": { patri: "Mewarisi kemandirian yang sangat kuat and fondasi yang kokoh.", matri: "Pola menolak bantuan orang lain karena gengsi atau trauma dikecewakan." },
+            "Pujut": { patri: "Mewarisi kecintaan pada kedamaian, ketenangan, dan kesederhanaan.", matri: "Pola sering melarikan diri (escapism) saat menghadapi konflik atau perdebatan." },
+            "Pahang": { patri: "Mewarisi integritas tinggi, teguh prinsip, dan kejujuran.", matri: "Pola terlalu kaku dalam menilai benar/salah dan sulit memaafkan." },
+            "Krulut": { patri: "Mewarisi rasa cinta kasih yang besar dan sifat welas asih.", matri: "Pola terlalu lekat (attachment) atau takut kehilangan orang yang disayangi." },
+            "Merakih": { patri: "Mewarisi kecerdasan ide, inovasi, dan pikiran yang progresif.", matri: "Pola sering overthinking dan khawatir akan hal-hal yang belum terjadi." },
+            "Tambir": { patri: "Mewarisi ketekunan, daya tahan pekerja keras, dan ketelitian.", matri: "Menyimpan rasa kurang dihargai meski sudah melakukan banyak hal." },
+            "Medangkungan": { patri: "Mewarisi keseimbangan logika dan emosi, serta ketahanan mental.", matri: "Pola memendam perasaan untuk menghindari konflik dalam keluarga." },
+            "Matal": { patri: "Mewarisi ketenangan luar namun menyimpan energi besar di dalam.", matri: "Pola meledak-ledak tiba-tiba jika batas kesabarannya sudah habis." },
+            "Uye": { patri: "Mewarisi kemampuan menyembuhkan (healing) dan membersihkan diri.", matri: "Pola terus mengungkit masa lalu atau kesulitan move on dari trauma." },
+            "Menail": { patri: "Mewarisi sifat visioner, terencana, dan pintar melihat peluang.", matri: "Pola kecemasan finansial atau selalu merasa belum cukup aman." },
+            "Prangbakat": { patri: "Mewarisi jiwa kesatria, pelindung, dan tak takut menghadapi masalah.", matri: "Pola terlalu keras pada diri sendiri dan jarang memberikan waktu istirahat." },
+            "Bala": { patri: "Mewarisi sifat pemimpin kelompok, pengayom, dan setia kawan.", matri: "Pola mendahulukan kepentingan orang banyak hingga menelantarkan diri sendiri." },
+            "Ugu": { patri: "Mewarisi analisis diri yang tajam dan keinginan terus berkembang.", matri: "Pola selalu mencari kekurangan diri (inner critic) dan sulit merasa puas." },
+            "Wayang": { patri: "Mewarisi fleksibilitas, kebijaksanaan, dan kecerdasan sosial.", matri: "Pola kehilangan jati diri karena terlalu sering menyesuaikan diri dengan orang lain." },
+            "Kelawu": { patri: "Mewarisi kedewasaan (old soul), tenang, dan bijak dalam bertindak.", matri: "Menyimpan luka masa kecil karena dituntut menjadi dewasa sebelum waktunya." },
+            "Dukut": { patri: "Mewarisi kesabaran tinggi, ulet, dan berkembang secara diam-diam.", matri: "Pola merasa tertinggal dari orang lain dan sering membandingkan diri." },
+            "Watugunung": { patri: "Mewarisi ketangguhan puncak, stabil, dan berwibawa.", matri: "Pola merasa memikul beban seluruh keluarga di pundak sendiri." },
+            "default": { patri: "Mewarisi daya juang, pantang menyerah.", matri: "Menyimpan memori intuisi batin kuat." }
+        };
+
+        let pararasanAktif = null;
+
+        function syncPararasanOtomatis() {
+            const sapta = document.getElementById("saptawara").value;
+            const panca = document.getElementById("pancawara").value;
+
+            let hasil = { nama: "Aras Kembang", urip: 12, sifat: "" };
+            if (matrixPararasan[sapta] && matrixPararasan[sapta][panca]) {
+                hasil = matrixPararasan[sapta][panca];
+            }
+            pararasanAktif = hasil;
+
+            const paraSelect = document.getElementById("para");
+            for (let i = 0; i < paraSelect.options.length; i++) {
+                if (paraSelect.options[i].value === hasil.namaLaku) {
+                    paraSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // FUNGSI KALKULATOR TANGGAL BARU (100% OTOMATIS)
+        function calculateAutoFields() {
+            const dobInput = document.getElementById("dob").value;
+            if (!dobInput) return;
+
+            const parts = dobInput.split("-");
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10);
+            const day = parseInt(parts[2], 10);
+
+            // Anchor Date Pawukon (17 Des 2023 adalah Redite Paing Sinta)
+            const anchorDate = Date.UTC(2023, 11, 17);
+            const targetDate = Date.UTC(year, month - 1, day);
+            const diffDays = Math.floor((targetDate - anchorDate) / (1000 * 60 * 60 * 24));
+
+            // 1. SAPTAWARA (Siklus 7 Hari)
+            const listSaptawara = ["Redite", "Soma", "Anggara", "Buda", "Wraspati", "Sukra", "Saniscara"];
+            let sIndex = diffDays % 7;
+            if (sIndex < 0) sIndex += 7;
+            const hariCocok = listSaptawara[sIndex];
+
+            // 2. PANCAWARA (Siklus 5 Hari) -> 17 Des 2023 = Paing (Index 1)
+            const listPancawara = ["Umanis", "Paing", "Pon", "Wage", "Kliwon"];
+            let pIndex = (1 + (diffDays % 5)) % 5;
+            if (pIndex < 0) pIndex += 5;
+            const pasaranCocok = listPancawara[pIndex];
+
+            // 3. WUKU (Siklus 210 Hari) -> 17 Des 2023 = Sinta (Index 0)
+            const listWuku = [
+                "Sinta", "Landep", "Ukir", "Kulantir", "Tolu", "Gumbreg", "Wariga", "Warigadian",
+                "Julungwangi", "Sungsang", "Dungulan", "Kuningan", "Langkir", "Medangsia", "Pujut", "Pahang",
+                "Krulut", "Merakih", "Tambir", "Medangkungan", "Matal", "Uye", "Menail", "Prangbakat",
+                "Bala", "Ugu", "Wayang", "Kelawu", "Dukut", "Watugunung"
+            ];
+            let cycleDays = diffDays % 210;
+            if (cycleDays < 0) cycleDays += 210;
+            let wIndex = Math.floor(cycleDays / 7);
+            const wukuCocok = listWuku[wIndex];
+
+            // Auto-Pilih Dropdown Saptawara
+            const saptawaraSelect = document.getElementById("saptawara");
+            for (let i = 0; i < saptawaraSelect.options.length; i++) {
+                if (saptawaraSelect.options[i].text === hariCocok) { saptawaraSelect.selectedIndex = i; break; }
+            }
+
+            // Auto-Pilih Dropdown Pancawara
+            const pancawaraSelect = document.getElementById("pancawara");
+            for (let i = 0; i < pancawaraSelect.options.length; i++) {
+                if (pancawaraSelect.options[i].text === pasaranCocok) { pancawaraSelect.selectedIndex = i; break; }
+            }
+
+            // Auto-Pilih Dropdown Wuku
+            const wukuSelect = document.getElementById("wuku");
+            for (let i = 0; i < wukuSelect.options.length; i++) {
+                if (wukuSelect.options[i].value === wukuCocok) { wukuSelect.selectedIndex = i; break; }
+            }
+
+            // Sinkronisasi Pararasan Berdasarkan Sapta & Panca Terbaru
+            syncPararasanOtomatis();
+
+            // 4. Hitung LIFE PATH (Numerologi)
+            function sumDigits(str) {
+                let sum = 0;
+                for (let i = 0; i < str.length; i++) {
+                    if(!isNaN(parseInt(str[i], 10))) sum += parseInt(str[i], 10);
+                }
+                return sum;
+            }
+            function reduceToSingleOrMaster(num) {
+                let n = num;
+                while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+                    n = sumDigits(n.toString());
+                }
+                return n;
+            }
+
+            // Catatan fix: tanggal, bulan, tahun TIDAK direduksi satu-satu di awal,
+            // karena itu bisa "membunuh" master number sebelum sempat terbentuk di total akhir.
+            // Cukup jumlahkan digit mentahnya, lalu reduksi SEKALI di total akhir (dengan aturan master number).
+            const daySum = sumDigits(day.toString());
+            const monthSum = sumDigits(month.toString());
+            const yearSum = sumDigits(year.toString());
+            let finalLp = reduceToSingleOrMaster(daySum + monthSum + yearSum);
+
+            const lpSelect = document.getElementById("lifepath");
+            for (let i = 0; i < lpSelect.options.length; i++) {
+                if (lpSelect.options[i].value == finalLp.toString()) { lpSelect.selectedIndex = i; break; }
+            }
+        }
+
+        function tentukanFokusEnergi(peta) {
+            const labelsID = { juang: "Daya Juang", emosi: "Kedalaman Emosi", stabilitas: "Stabilitas Batin", intuisi: "Intuisi", ekspresi: "Ekspresi Diri", mental: "Ketahanan Mental" };
+            const labels = (typeof currentLang !== "undefined" && currentLang === "en") ? fokusLabelsEN : labelsID;
+            let lowestKey = null, lowestVal = 999;
+            for (const k in peta) { if (peta[k] < lowestVal) { lowestVal = peta[k]; lowestKey = k; } }
+            return { key: lowestKey, label: labels[lowestKey], val: lowestVal };
+        }
+
+        function hitungIntegrasiArketipeLokal(lp, wuku, pararasan, matriText, pancaText, fokus) {
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+            const namaDepan = (isEN ? prefixArchetypeEN[lp] : prefixArchetype[lp]) || (isEN ? "Growing Soul" : "Jiwa Bertumbuh");
+            const judulSederhana = `${namaDepan} ${wuku}`;
+            let deskripsiSpiritual = "";
+
+            if (isEN) {
+                if (["1", "8", "22"].includes(lp)) { deskripsiSpiritual = `As a ${namaDepan}, you carry a highly dominant energy of independence and fighting spirit. When this leadership energy merges with the Wuku ${wuku} cycle and the inner vibration of ${pararasan}, you are destined to become a protector and pillar of strength for those around you. Your soul's greatest challenge is balancing a hard ego with gentleness of feeling, so you don't feel you're carrying the weight of the world alone.`; }
+                else if (["2", "6", "33"].includes(lp)) { deskripsiSpiritual = `As a ${namaDepan}, your inner self is a cup of pure loving-kindness, full of natural empathy. This gentle energy blends very strongly with the birth cycle of Wuku ${wuku} and the character of ${pararasan}, making you highly attuned to reading others' inner wounds. Your greatest spiritual challenge is setting firm personal boundaries; you must heal yourself first before saving others from sorrow.`; }
+                else if (["3", "5", "9"].includes(lp)) { deskripsiSpiritual = `As a ${namaDepan}, your soul carries a blend of free expression, cheerfulness, and deep wisdom. Through the cosmic drive of Wuku ${wuku} and the alignment of ${pararasan}, you are equipped with flexible mental resilience to face the waves of change. The main focus of your inner journey right now is releasing the chains of the past so you can fly freely and inspire many people.`; }
+                else if (["4", "7", "11"].includes(lp)) { deskripsiSpiritual = `As a ${namaDepan}, you are a truth-seeker grounded in logic with a very sharp intuitive radar. The mysterious energy veil of Wuku ${wuku} resonates perfectly with the frequency of ${pararasan} within you. This combination makes you a reliable observer and advisor, but watch out for the trap of a restless mind (overthinking), which often leaves you feeling isolated or mentally exhausted.`; }
+                else { deskripsiSpiritual = `Through the combined vibration of Core Character ${lp} and the cyclical energy movement of Wuku ${wuku}, your inner blueprint is in cosmic alignment. This personality format guides you to keep recognizing yourself and independently restoring your soul.`; }
+
+                deskripsiSpiritual += ` Specifically, the maternal lineage pattern from Wuku ${wuku} shows: "${matriText}" — while your birth-day energy shows: "${pancaText}" This specific combination places your main growth point right now on the aspect of ${fokus.label}, which most needs attention and strengthening.`;
+
+                return { nama: judulSederhana, desc: deskripsiSpiritual };
+            }
+
+            if (["1", "8", "22"].includes(lp)) { deskripsiSpiritual = `Sebagai seorang ${namaDepan}, Anda membawa energi kemandirian dan daya juang yang sangat dominan. Saat energi kepemimpinan ini berpadu dengan siklus Wuku ${wuku} dan getaran watak batin ${pararasan}, Anda ditakdirkan untuk menjadi pelindung dan penopang bagi orang di sekitar Anda. Tantangan terbesar jiwa Anda adalah menyeimbangkan ego yang keras dengan kelembutan rasa, agar Anda tidak merasa memikul beban dunia ini sendirian.`; } 
+            else if (["2", "6", "33"].includes(lp)) { deskripsiSpiritual = `Sebagai seorang ${namaDepan}, batin Anda adalah cawan cinta kasih murni yang penuh dengan empati alami. Energi kelembutan ini menyatu sangat kuat dengan siklus lahir Wuku ${wuku} dan watak ${pararasan}, membuat Anda sangat peka dalam membaca luka batin orang lain. Tantangan spiritual terbesar Anda adalah menetapkan batasan diri yang tegas; Anda wajib menyembuhkan diri sendiri terlebih dahulu sebelum menyelamatkan orang lain dari kesedihan.`; } 
+            else if (["3", "5", "9"].includes(lp)) { deskripsiSpiritual = `Sebagai seorang ${namaDepan}, jiwa Anda membawa corak kebebasan berekspresi, keceriaan, sekaligus kebijaksanaan yang mendalam. Melalui dorongan energi kosmis Wuku ${wuku} serta keselarasan watak ${pararasan}, Anda dibekali ketahanan mental yang luwes menghadapi ombak perubahan. Fokus utama perjalanan batin Anda saat ini adalah melepaskan belenggu masa lalu agar Anda bisa terbang bebas menginspirasi banyak orang.`; } 
+            else if (["4", "7", "11"].includes(lp)) { deskripsiSpiritual = `Sebagai seorang ${namaDepan}, Anda adalah seorang pencari kebenaran dengan landasan logika dan radar intuisi yang sangat tajam. Selubung energi misterius dari Wuku ${wuku} beresonansi sempurna dengan frekuensi watak ${pararasan} di dalam batin Anda. Kombinasi ini menjadikan Anda pengamat dan penasihat yang andal, namun waspadai jebakan pikiran liart (overthinking) yang kerap membuat Anda merasa terasing atau kelelahan secara mental.`; } 
+            else { deskripsiSpiritual = `Melalui gabungan getaran Karakter Inti ${lp} dan gerak siklus energi lahir Wuku ${wuku}, cetak biru batin Anda berada dalam keselarasan kosmis. Format kepribadian ini menuntun Anda untuk terus mengenali diri dan memulihkan jiwa secara mandiri.`; }
+
+            // Lapisan personalisasi tambahan: warisan garis ibu (Wuku) + energi hari lahir (Pancawara) + area energi paling lemah
+            deskripsiSpiritual += ` Secara spesifik, garis warisan ibu dari Wuku ${wuku} menunjukkan pola: "${matriText}" — sementara energi hari lahir Anda menunjukkan: "${pancaText}" Kombinasi khusus ini membuat titik pertumbuhan utama Anda saat ini terletak pada aspek ${fokus.label}, yang paling perlu mendapat perhatian dan penguatan.`;
+
+            return { nama: judulSederhana, desc: deskripsiSpiritual };
+        }
+
+        function buatSankalpaPersonal(dLp, sapta, panca, fokus) {
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+
+            if (isEN) {
+                const pembukaMapEN = {
+                    "Redite": "I release the need to always appear strong in front of others.",
+                    "Soma": "I accept every shift in my feelings gently, without judging myself.",
+                    "Anggara": "I calm the fire within me and channel it into strength that builds, not destroys.",
+                    "Buda": "I rest my busy mind and make room for calm to enter.",
+                    "Wraspati": "I accept that not everyone will agree with me, and that doesn't diminish my worth.",
+                    "Sukra": "I have the right to voice my own needs, not just keep others comfortable.",
+                    "Saniscara": "I allow myself to pause and rest without feeling guilty."
+                };
+                const pembukaE = pembukaMapEN[sapta] || "";
+                let tambahanPancaE = "";
+                if (panca === "Paing" || panca === "Kliwon") { tambahanPancaE = " I channel this great energy of mine wisely, without needing to explode or bottle it up alone."; }
+                else if (panca === "Wage") { tambahanPancaE = " I dare to release what I've kept hidden within myself for so long."; }
+                else if (panca === "Umanis") { tambahanPancaE = " I remain my warm self, without forcing myself to please everyone."; }
+                else if (panca === "Pon") { tambahanPancaE = " I trust my own judgment, and dare to move forward even when not everything feels certain."; }
+                const fokusLineE = ` Specifically, I give my full attention to healing the ${fokus.label.toLowerCase()} side of myself, because this is where I most need to grow right now.`;
+                return `${pembukaE} ${dLp.sankalpa}${tambahanPancaE}${fokusLineE}`.trim();
+            }
+
+            const pembukaMap = {
+                "Redite": "Aku melepaskan kebutuhan untuk selalu tampil kuat di depan orang lain.",
+                "Soma": "Aku menerima setiap perubahan perasaanku dengan lembut, tanpa menghakimi diri sendiri.",
+                "Anggara": "Aku menenangkan api dalam diriku dan menyalurkannya menjadi kekuatan yang membangun, bukan merusak.",
+                "Buda": "Aku mengistirahatkan pikiranku yang ramai dan memberi ruang bagi ketenangan untuk masuk.",
+                "Wraspati": "Aku menerima bahwa tidak semua orang akan sepaham denganku, dan itu tidak mengurangi nilai diriku.",
+                "Sukra": "Aku berhak menyuarakan kebutuhanku sendiri, bukan hanya menjaga kenyamanan orang lain.",
+                "Saniscara": "Aku mengizinkan diriku untuk berhenti sejenak dan beristirahat tanpa merasa bersalah."
+            };
+            const pembuka = pembukaMap[sapta] || "";
+
+            let tambahanPanca = "";
+            if (panca === "Paing" || panca === "Kliwon") { tambahanPanca = " Aku menyalurkan energiku yang besar ini dengan bijak, tanpa harus meledak ataupun memendamnya sendirian."; }
+            else if (panca === "Wage") { tambahanPanca = " Aku berani mengeluarkan apa yang selama ini kupendam sendirian di dalam batinku."; }
+            else if (panca === "Umanis") { tambahanPanca = " Aku tetap menjadi diriku yang hangat, tanpa harus memaksakan diri menyenangkan semua orang."; }
+            else if (panca === "Pon") { tambahanPanca = " Aku percaya pada penilaianku sendiri, dan berani melangkah meski belum semua terasa pasti."; }
+
+            const fokusLine = ` Secara khusus, aku memberi perhatian penuh pada penyembuhan sisi ${fokus.label.toLowerCase()} dalam diriku, karena di sinilah aku paling perlu bertumbuh saat ini.`;
+
+            return `${pembuka} ${dLp.sankalpa}${tambahanPanca}${fokusLine}`.trim();
+        }
+
+        function buatRitualPersonal(dPara, sapta, panca, fokus) {
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+
+            if (isEN) {
+                let waktuE = "at night before bed, when the atmosphere is calmer";
+                if (["Redite", "Anggara", "Saniscara"].includes(sapta)) { waktuE = "at night, because your birth-day energy tends to run 'hot' and needs cooling before rest"; }
+                else if (["Soma", "Sukra"].includes(sapta)) { waktuE = "in the morning while the energy is still fresh, because your birth day tends to be gentle and easily shaped"; }
+
+                let frekuensiE = "3x a week";
+                if (panca === "Paing" || panca === "Kliwon") { frekuensiE = "daily as a routine, because your emotional energy is quite strong and needs more frequent release"; }
+                else if (panca === "Pon") { frekuensiE = "1-2x a week as routine maintenance"; }
+
+                const fokusRitualE = ` While performing this ritual, set a specific intention to restore the ${fokus.label.toLowerCase()} side of yourself that still needs strengthening right now.`;
+
+                return `<strong>Sacred Ritual Steps (personalized for you):</strong> The client is advised to perform a soul-calming night bathing ritual using <strong>${dPara.salt}</strong>. Dissolve an appropriate amount of the ritual salt crystals into a container or bucket of pure warm water, and use it as a final rinse over the whole body after a regular bath. Perform this at ${waktuE}, with a frequency of ${frekuensiE}.${fokusRitualE}`;
+            }
+
+            let waktu = "malam hari menjelang tidur, saat suasana lebih tenang";
+            if (["Redite", "Anggara", "Saniscara"].includes(sapta)) { waktu = "malam hari, karena energi hari lahir Anda cenderung 'panas' dan butuh diredakan sebelum beristirahat"; }
+            else if (["Soma", "Sukra"].includes(sapta)) { waktu = "pagi hari saat energi masih baru, karena hari lahir Anda cenderung lembut dan mudah dibentuk"; }
+
+            let frekuensi = "3x dalam seminggu";
+            if (panca === "Paing" || panca === "Kliwon") { frekuensi = "setiap hari secara rutin, karena energi emosi Anda cukup besar dan butuh pelepasan lebih sering"; }
+            else if (panca === "Pon") { frekuensi = "1-2x seminggu sebagai perawatan rutin"; }
+
+            const fokusRitual = ` Sambil menjalankan ritual ini, niatkan secara khusus untuk memulihkan sisi ${fokus.label.toLowerCase()} Anda yang saat ini masih perlu dikuatkan.`;
+
+            return `<strong>Langkah Sakral Ritual (disesuaikan untuk Anda):</strong> Klien disarankan menjalankan ritual mandi malam penenang sukma menggunakan <strong>${dPara.salt}</strong>. Larutkan kristal garam ritual secukupnya ke dalam wadah atau seember air hangat murni, gunakan sebagai siraman bilasan penutup seluruh tubuh pasca mandi biasa. Lakukan pada waktu ${waktu}, dengan frekuensi ${frekuensi}.${fokusRitual}`;
+        }
+
+        function potongKalimat(teks, jumlahKata) {
+            const kata = teks.split(" ");
+            if (kata.length <= jumlahKata) return teks;
+            return kata.slice(0, jumlahKata).join(" ") + "...";
+        }
+
+        function kotakArketipeFull(judul, arch, desc) {
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+            const label = isEN ? `👑 Your Archetype: "${judul}"` : `👑 Arketipe Anda: "${judul}"`;
+            const closing = isEN
+                ? "But the archetype is only the surface. Behind it lies the reason why this soul chose to be born with these coordinates. That answer begins to unfold in the next part of the journey."
+                : "Namun arketipe hanyalah permukaan. Di baliknya masih ada alasan mengapa jiwa ini memilih lahir dengan koordinat tersebut. Jawaban itu mulai terbuka pada perjalanan berikutnya.";
+            return `
+            <div class="shadow-box" style="border-left: 4px solid var(--accent-gold); background: rgba(169,129,47,0.07); margin-bottom: 12px;">
+                <span style="font-weight:bold; color: var(--accent-gold); font-size:1.1em;">${label}</span>
+                <p style="font-size: 1em; line-height: 1.8; color: var(--text-main); margin-top: 10px;">${arch} ${desc}</p>
+            </div>
+            <p style="font-size: 0.92em; font-style: italic; line-height:1.75; color: var(--accent-clay); margin-top: 14px;">${closing}</p>`;
+        }
+
+        function kotakTeaser(emoji, judul, isiTerpotong, hook) {
+            return `
+            <div class="shadow-box" style="border-left: 4px solid var(--accent-gold); background: rgba(169,129,47,0.07); margin-bottom: 12px; position:relative;">
+                <span style="font-weight:bold; color: var(--accent-gold);">${emoji} ${judul}</span>
+                <p style="font-size: 0.95em; line-height: 1.7; color: var(--text-main); margin-top: 8px;">${isiTerpotong}</p>
+                <p style="font-size: 0.82em; font-style: italic; color: var(--accent-clay); margin-top: 8px; margin-bottom:0;">${hook}</p>
+            </div>`;
+        }
+
+        function buatTeaserPublik(lp, sapta, panca, wName, arketipeLokal, dLp, dWuku, elemenLp, elemenWuku, py, dPy) {
+            return kotakArketipeFull(arketipeLokal.nama, dLp.arch, arketipeLokal.desc);
+        }
+
+        // Menampilkan pratinjau Peta Energi Tubuh dalam kondisi blur (data asli klien dipakai untuk
+        // menentukan panjang bar, namun angka & makna detail tetap terkunci di balik Premium).
+        // Ini murni lapisan presentasi -- tidak mengubah cara peta dihitung.
+        function buatPetaEnergiTeaser(peta, isEN) {
+            const labelKeys = ["juang", "emosi", "stabilitas", "intuisi", "ekspresi", "mental"];
+            const labelMap = {
+                juang: uiText.peta_dim_juang, emosi: uiText.peta_dim_emosi, stabilitas: uiText.peta_dim_stabilitas,
+                intuisi: uiText.peta_dim_intuisi, ekspresi: uiText.peta_dim_ekspresi, mental: uiText.peta_dim_mental
+            };
+            const lang = isEN ? "en" : "id";
+            let rows = "";
+            labelKeys.forEach(k => {
+                const val = peta[k] || 50;
+                rows += `
+                <div class="peta-row">
+                    <div class="peta-row-label"><span>${labelMap[k][lang]}</span><span>█████</span></div>
+                    <div class="peta-row-bg"><div class="peta-row-fill" style="width:${val}%;"></div></div>
+                </div>`;
+            });
+            return `
+            <div class="peta-blur-wrap">
+                <div class="peta-blur-content">${rows}</div>
+                <div class="peta-blur-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="lock-text">${uiText.peta_locked_text[lang]}</span>
+                </div>
+            </div>`;
+        }
+
+        // ---- Testimoni & Social Proof (sumber data: Google Sheets via Google Form) ----
+        //
+        // ALUR SEKARANG (testimoni masuk otomatis ke Sheet lewat Google Form, kamu tinggal moderasi):
+        // 1. Buat Google Form dengan pertanyaan (judulnya harus PERSIS): Nama | Rating | Testimoni_ID | Meta_ID (opsional)
+        // 2. Di tab "Responses" Form, hubungkan ke spreadsheet yang SHEET_ID-nya ada di bawah ini
+        //    (pilih "Select existing spreadsheet" saat menghubungkan).
+        // 3. Google akan membuat tab baru "Form Responses 1" -> rename jadi "Testimoni" (harus sama dengan SHEET_TAB_NAME di bawah).
+        // 4. Tambahkan 1 kolom manual di ujung kanan tab itu, namanya "Tampilkan".
+        //    Isi "Ya" di baris yang mau ditampilkan di web, kosongkan untuk yang belum/tidak disetujui.
+        //    (Testimoni_EN dan Meta_EN opsional -- kalau tidak ada kolomnya, otomatis pakai versi ID)
+        // 5. Copy link Google Form-nya, isi ke konstanta GOOGLE_FORM_URL di bawah.
+        // 6. Selesai. Testimoni baru dari pengunjung otomatis nambah baris di Sheet -- kamu cukup buka Sheet,
+        //    tulis "Ya" di kolom Tampilkan untuk yang disetujui, tanpa perlu edit kode lagi.
+        const SHEET_ID = "13YX0VXK4LsFwJItgp7n7h1YxRj6YA-SNCSPfitXR08k";
+        const SHEET_TAB_NAME = "TESTIMONI"; // nama tab hasil respons Google Form
+
+        // Link Google Form untuk kirim testimoni. Ganti dengan link form kamu sendiri (bentuk: https://forms.gle/xxxxx)
+        const GOOGLE_FORM_URL = "https://forms.gle/FpXe6oKVYVpX97ge8";
+
+        // Data cadangan (dipakai HANYA jika SHEET_ID belum diisi, atau Sheet gagal dimuat).
+        // Ganti/hapus contoh di bawah ini kalau kamu memilih memakai Google Sheets sepenuhnya.
+        const TESTIMONI_FALLBACK = [
+            {
+                nama: "[Nama klien — ganti dengan testimoni asli]",
+                meta_id: "Klien Soul Blueprint Premium",
+                meta_en: "Soul Blueprint Premium Client",
+                rating: 5,
+                isi_id: "[Tempel testimoni asli dari klien di sini, atau sambungkan Google Sheets di atas.]",
+                isi_en: "[Paste the real client testimonial here, or connect Google Sheets above.]"
+            }
+        ];
+
+        let TESTIMONI_DATA = TESTIMONI_FALLBACK;
+
+        // WADAH STATISTIK: isi angka asli (jumlah pembaca, rating rata-rata, lama pengalaman) saat sudah tersedia.
+        const TRUST_STATS = { showTrustStats: false, totalPembaca: 0, ratingRata: 0, tahunPengalaman: 0 };
+
+        function renderTrustStats() {
+            const el = document.getElementById("trust-stats-row");
+            if (!el) return;
+            if (!TRUST_STATS.showTrustStats) { el.innerHTML = ""; return; }
+            const lang = currentLang;
+            el.innerHTML = `
+                <div class="trust-stat"><span class="num">${TRUST_STATS.totalPembaca}+</span><span class="lbl">${uiText.stat_pembaca_lbl[lang]}</span></div>
+                <div class="trust-stat"><span class="num">${TRUST_STATS.ratingRata.toFixed(1)}★</span><span class="lbl">${uiText.stat_rating_lbl[lang]}</span></div>
+                <div class="trust-stat"><span class="num">${TRUST_STATS.tahunPengalaman}+</span><span class="lbl">${uiText.stat_tahun_lbl[lang]}</span></div>`;
+        }
+
+        function renderTestimoni() {
+            const grid = document.getElementById("testi-grid");
+            if (!grid) return;
+            const isEN = currentLang === "en";
+            if (!TESTIMONI_DATA.length) { grid.innerHTML = ""; return; }
+            grid.innerHTML = TESTIMONI_DATA.map(t => `
+                <div class="testi-card">
+                    <span class="testi-quote-mark">"</span>
+                    <div class="testi-stars">${"★".repeat(t.rating)}${"☆".repeat(5 - t.rating)}</div>
+                    <div>${isEN ? (t.isi_en || t.isi_id) : t.isi_id}</div>
+                    <div class="testi-author">${t.nama} <span class="testi-meta">— ${isEN ? (t.meta_en || t.meta_id) : t.meta_id}</span></div>
+                </div>`).join("");
+            renderTrustStats();
+        }
+
+        // Parser CSV kecil yang menangani kolom berisi koma/tanda kutip/baris baru (format standar Google Sheets CSV export)
+        function parseCSV(text) {
+            const rows = [];
+            let row = [], field = "", inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i], next = text[i + 1];
+                if (inQuotes) {
+                    if (c === '"' && next === '"') { field += '"'; i++; }
+                    else if (c === '"') { inQuotes = false; }
+                    else { field += c; }
+                } else {
+                    if (c === '"') { inQuotes = true; }
+                    else if (c === ',') { row.push(field); field = ""; }
+                    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ""; }
+                    else if (c === '\r') { /* skip */ }
+                    else { field += c; }
+                }
+            }
+            if (field.length || row.length) { row.push(field); rows.push(row); }
+            return rows.filter(r => r.length > 1 || r[0] !== "");
+        }
+
+        async function muatTestimoniDariSheet() {
+            if (!SHEET_ID || SHEET_ID === "GANTI_DENGAN_SHEET_ID_ANDA") return; // belum disetup, pakai fallback
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TAB_NAME)}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Gagal memuat Google Sheet: " + res.status);
+                const csvText = await res.text();
+                const rows = parseCSV(csvText);
+                if (rows.length < 2) return;
+                const header = rows[0].map(h => h.trim().toLowerCase());
+                const idx = {
+                    nama: header.indexOf("nama"), rating: header.indexOf("rating"),
+                    isi_id: header.indexOf("testimoni_id"), isi_en: header.indexOf("testimoni_en"),
+                    meta_id: header.indexOf("meta_id"), meta_en: header.indexOf("meta_en"),
+                    tampilkan: header.indexOf("tampilkan")
+                };
+                const parsed = rows.slice(1)
+                    .filter(r => idx.tampilkan === -1 || (r[idx.tampilkan] || "").trim().toLowerCase() === "ya" || (r[idx.tampilkan] || "").trim().toLowerCase() === "yes")
+                    .map(r => ({
+                        nama: r[idx.nama] || "",
+                        rating: Math.max(1, Math.min(5, parseInt(r[idx.rating], 10) || 5)),
+                        isi_id: r[idx.isi_id] || "",
+                        isi_en: idx.isi_en !== -1 ? r[idx.isi_en] : "",
+                        meta_id: idx.meta_id !== -1 ? r[idx.meta_id] : "",
+                        meta_en: idx.meta_en !== -1 ? r[idx.meta_en] : ""
+                    }))
+                    .filter(t => t.nama && t.isi_id);
+                if (parsed.length) { TESTIMONI_DATA = parsed; renderTestimoni(); }
+            } catch (err) {
+                console.warn("Testimoni: gagal memuat dari Google Sheets, memakai data cadangan.", err);
+            }
+        }
+
+        function bukaFormTestimoni() {
+            const isEN = currentLang === "en";
+            if (!GOOGLE_FORM_URL || GOOGLE_FORM_URL === "GANTI_DENGAN_LINK_GOOGLE_FORM_ANDA") {
+                alert(isEN ? "The testimonial form link hasn't been set up yet." : "Link form testimoni belum disetel.");
+                return;
+            }
+            window.open(GOOGLE_FORM_URL, "_blank");
+        }
+
+        function generateBlueprint() {
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+            const lp = document.getElementById("lifepath").value;
+            const sapta = document.getElementById("saptawara").value;
+            const panca = document.getElementById("pancawara").value;
+            const wName = document.getElementById("wuku").value;
+            const pName = document.getElementById("para").value;
+
+            const srcLifePath = isEN ? dbLifePathEN : dbLifePath;
+            const srcWuku = isEN ? dbWukuEN : dbWuku;
+            const srcPancawara = isEN ? dbPancawaraEN : dbPancawara;
+            const srcPersonalYear = isEN ? dbPersonalYearEN : dbPersonalYear;
+
+            const dLp = srcLifePath[lp] || srcLifePath["default"];
+            const dWuku = srcWuku[wName] || srcWuku["default"];
+
+            const p = dLp.peta || (dbLifePath[lp] || dbLifePath["default"]).peta;
+            const fokus = tentukanFokusEnergi(p);
+            const arketipeLokal = hitungIntegrasiArketipeLokal(lp, wName, pName, dWuku.matri, srcPancawara[panca] || "", fokus);
+
+            const elemenLp = dbElemenLifePath[lp] || "Tanah";
+            const elemenWuku = dbElemenWuku[wName] || dbElemenWuku["default"];
+
+            const dobVal = document.getElementById("dob").value;
+            let py = { num: 1, year: new Date().getFullYear() };
+            if (dobVal) {
+                const parts = dobVal.split("-");
+                py = hitungPersonalYear(parseInt(parts[2], 10), parseInt(parts[1], 10));
+            }
+            const dPy = srcPersonalYear[py.num] || srcPersonalYear[1];
+
+            document.getElementById("out-config").innerText = isEN
+                ? `Core Character ${lp} • Born ${sapta} ${panca} • Wuku Cycle ${wName}`
+                : `Karakter Inti ${lp} • Lahir ${sapta} ${panca} • Siklus Wuku ${wName}`;
+            document.getElementById("out-teaser").innerHTML = buatTeaserPublik(lp, sapta, panca, wName, arketipeLokal, dLp, dWuku, elemenLp, elemenWuku, py, dPy);
+            document.getElementById("out-peta-blur").innerHTML = buatPetaEnergiTeaser(p, isEN);
+
+            document.getElementById("welcome-message").classList.add("hidden");
+            document.getElementById("result-panel").classList.remove("hidden");
+            document.querySelector('.sidebar').classList.remove('active');
+        }
+
+        function kirimWhatsapp() {
+            const nama = document.getElementById("nama_pemesan").value.trim();
+            const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
+            if (!nama) {
+                alert(isEN ? "Please enter your name first, so we can process your order confirmation." : "Mohon isi nama Anda dulu ya, supaya konfirmasi pesanan lebih mudah diproses.");
+                return;
+            }
+            const dob = document.getElementById("dob").value;
+            const lp = document.getElementById("lifepath").value;
+            const wName = document.getElementById("wuku").value;
+            const sapta = document.getElementById("saptawara").value;
+            const panca = document.getElementById("pancawara").value;
+            const harga = document.getElementById("harga-premium").innerText;
+
+            let tglTampil = dob;
+            if (dob) {
+                const [y, m, d] = dob.split("-");
+                tglTampil = isEN ? `${m}/${d}/${y}` : `${d}-${m}-${y}`;
+            }
+
+            const NOMOR_WA_ADMIN = "6289616673334";
+
+            const pesan = isEN
+                ? `Hello, I would like to order the Prana Sangkala Soul Blueprint Premium ($${harga}).\nMy data:\nName: ${nama}\nDate of Birth: ${tglTampil}\nLife Path: ${lp}\nWuku: ${wName}\nSaptawara: ${sapta}\nPancawara: ${panca}\n\nPlease send me the payment and delivery process. Thank you.`
+                : `Halo, saya ingin memesan Soul Blueprint Premium Prana Sangkala ($${harga}).\nData saya:\nNama: ${nama}\nTanggal Lahir: ${tglTampil}\nLife Path: ${lp}\nWuku: ${wName}\nSaptawara: ${sapta}\nPancawara: ${panca}\n\nMohon informasi proses pembayaran dan pengiriman hasil bacaan. Terima kasih.`;
+            const url = `https://wa.me/${NOMOR_WA_ADMIN}?text=${encodeURIComponent(pesan)}`;
+            window.open(url, "_blank");
+        }
+
+        function daftarSankalpa() {
+            const EMAIL_ADMIN = "sekargirikinasih@gmail.com";
+            const subjek = currentLang === "en" ? "Sankalpa Agni Alignment Session Registration" : "Pendaftaran Sesi Sankalpa Agni Alignment";
+            const isi = currentLang === "en"
+                ? "Hello, I would like to register for a Sankalpa Agni Alignment session.\n\nName: \nDate of Birth: \n\nPlease send me the schedule and process information. Thank you."
+                : "Halo, saya ingin mendaftar sesi Sankalpa Agni Alignment.\n\nNama: \nTanggal Lahir: \n\nMohon informasi jadwal dan prosesnya. Terima kasih.";
+            const url = `mailto:${EMAIL_ADMIN}?subject=${encodeURIComponent(subjek)}&body=${encodeURIComponent(isi)}`;
+            window.location.href = url;
+        }
+
+        const uiText = {
+            tagline: { id: "PETA KOORDINAT JIWA DALAM RUANG DAN WAKTU", en: "MAP OF SOUL COORDINATES IN SPACE AND TIME" },
+            h_input_data: { id: "⚜️ Input Data Klien", en: "⚜️ Client Data Input" },
+            lbl_dob: { id: "Tanggal Lahir Masehi", en: "Gregorian Birth Date" },
+            hint_dob: { id: "*Otomatis menghitung Hari, Wuku & Life Path", en: "*Automatically calculates Day, Wuku & Life Path" },
+            lbl_saptawara: { id: "Saptawara (Hari Lahir)", en: "Saptawara (Day of Birth)" },
+            lbl_pancawara: { id: "Pancawara (Pasaran)", en: "Pancawara (Market Day)" },
+            lbl_para: { id: "Watak Dasar (Pararasan Terhitung)", en: "Base Character (Calculated Pararasan)" },
+            hint_para: { id: "*Otomatis terisi sesuai Hari & Pasaran kelahiran (Tabel Pararasan/Palelintangan resmi).", en: "*Automatically filled according to birth Day & Market Day (official Pararasan/Palelintangan Table)." },
+            lbl_lifepath: { id: "Karakter Utama (Life Path)", en: "Core Character (Life Path)" },
+            lbl_wuku: { id: "Wuku (Siklus Lahir)", en: "Wuku (Birth Cycle)" },
+            btn_analisis: { id: "Mulai Analisis Batin", en: "Start Inner Analysis" },
+            h_main_title: { id: "PETA KOORDINAT JIWA", en: "MAP OF SOUL COORDINATES" },
+            p_main_subtitle: { id: "Mengenali Pola Batin, Karakter Asli, dan Cara Menenangkan Diri", en: "Recognizing Inner Patterns, True Character, and Ways to Calm Yourself" },
+            p_welcome: { id: "Silakan isi data lahir klien di menu samping untuk melihat hasil bacaan karakternya.", en: "Please fill in the client's birth data in the side menu to see their character reading." },
+            h_ringkasan: { id: "Data Kelahiran & Ringkasan Bacaan", en: "Birth Data & Reading Summary" },
+            h_sec1: { id: "👑 1. Analisa Jiwa & Arketipe", en: "👑 1. Soul Analysis & Archetype" },
+            p_perjalanan: { id: "— perjalanan berlanjut —", en: "— the journey continues —" },
+            locked_badge: { id: "🔒 Terkunci", en: "🔒 Locked" },
+            link_premium: { id: "Buka di Soul Blueprint Premium →", en: "Unlock in Soul Blueprint Premium →" },
+
+            h_sec2: { id: "🔗 2. Elemen & Wacakan Prana Sangkala", en: "🔗 2. Element & Prana Sangkala Reading" },
+            p_sec2: { id: "Setiap jiwa membawa cara yang berbeda dalam bergerak, merasakan, dan merespons kehidupan.<br><br>Energi bawaanmu memiliki dinamika yang unik. Ada kekuatan yang selama ini menopangmu, namun ada pula pola yang diam-diam menguras energimu.<br><br>Bagaimana energi itu sebenarnya bekerja?", en: "Every soul carries a different way of moving, feeling, and responding to life.<br><br>Your innate energy has a unique dynamic. There is a strength that has been supporting you, but there is also a pattern that quietly drains your energy.<br><br>How does that energy actually work?" },
+
+            h_sec3: { id: "📊 3. Peta Energi Tubuh", en: "📊 3. Body Energy Map" },
+            p_sec3: { id: "Perjalanan jiwa selalu meninggalkan jejak pada tubuh.<br><br>Ada pusat energi yang menjadi kekuatan utamamu, namun ada pula bagian yang sedang meminta perhatian.<br><br>Di mana letaknya, dan apa maknanya bagi perjalanan hidupmu?", en: "The soul's journey always leaves a trace on the body.<br><br>There is an energy center that is your main strength, but there is also a part that is currently asking for attention.<br><br>Where is it located, and what does it mean for your life journey?" },
+
+            h_sec4: { id: "🕉 4. Mandala Body Scanning", en: "🕉 4. Mandala Body Scanning" },
+            p_sec4: { id: "Tidak semua luka tinggal di pikiran.<br><br>Sebagian memilih berdiam di tubuh hingga akhirnya memengaruhi cara kita menjalani hidup.<br><br>Tubuhmu sedang mencoba menyampaikan sesuatu.", en: "Not all wounds stay in the mind.<br><br>Some choose to settle in the body until they eventually affect the way we live our lives.<br><br>Your body is trying to tell you something." },
+
+            h_sec5: { id: "⚔ 5. Benturan Jiwa & Fase Kehidupan", en: "⚔ 5. Soul Clashes & Life Phases" },
+            p_sec5: { id: "Pernahkah kamu merasa menghadapi pola yang sama berulang kali?<br><br>Mungkin bukan hidup yang berulang.<br><br>Melainkan pelajaran jiwamu yang belum selesai.", en: "Have you ever felt like you're facing the same pattern over and over?<br><br>Maybe it isn't life repeating itself.<br><br>Rather, it's a lesson your soul hasn't yet finished learning." },
+
+            h_sec6: { id: "🌿 6. Pola Garis Leluhur", en: "🌿 6. Ancestral Line Patterns" },
+            p_sec6: { id: "Tidak semua pola berasal dari dirimu sendiri.<br><br>Sebagian merupakan warisan yang terus bekerja hingga hari ini.<br><br>Apa yang sebenarnya sedang diwariskan kepadamu?", en: "Not all patterns originate from yourself.<br><br>Some are an inheritance that continues to work to this day.<br><br>What is actually being passed down to you?" },
+
+            h_sec7: { id: "✨ 7. Samaya Jiwa", en: "✨ 7. Soul's Sacred Vow" },
+            p_sec7: { id: "Setiap jiwa lahir membawa sebuah janji.<br><br>Janji itu bukan tentang masa depan.<br>Melainkan alasan mengapa kehidupan ini dipilih.<br><br>Apa sebenarnya janji jiwamu?", en: "Every soul is born carrying a promise.<br><br>That promise isn't about the future.<br>Rather, it's the reason this life was chosen.<br><br>What is your soul's promise, really?" },
+
+            h_sec8: { id: "🌑 8. Sangkala Jiwa", en: "🌑 8. Soul's Shadow Cycle" },
+            p_sec8: { id: "Di balik setiap cahaya selalu ada bayangan yang membuat jiwa lupa terhadap arah pulangnya.<br><br>Bukan kutukan.<br>Bukan nasib buruk.<br><br>Melainkan pola yang terus berulang hingga akhirnya disadari.", en: "Behind every light there's always a shadow that makes the soul forget its way home.<br><br>Not a curse.<br>Not bad luck.<br><br>Rather, a pattern that keeps repeating until it's finally recognized." },
+
+            h_sec9: { id: "💰 9. Potensi Jiwa & Rezeki", en: "💰 9. Soul Potential & Fortune" },
+            p_sec9: { id: "Kelimpahan bukan sekadar hasil kerja keras.<br><br>Ia muncul ketika seseorang berjalan di ruang yang benar-benar selaras dengan jiwanya.<br><br>Di mana ruang itu bagimu?", en: "Abundance isn't merely the result of hard work.<br><br>It arises when someone walks in a space that is truly aligned with their soul.<br><br>Where is that space for you?" },
+
+            h_sec10: { id: "🕰 10. Momentum Jiwa (Kala Hita)", en: "🕰 10. Soul Momentum (Kala Hita)" },
+            p_sec10: { id: "Tidak semua waktu memiliki kualitas yang sama.<br><br>Ada masa untuk menunggu.<br>Ada masa untuk melangkah.<br><br>Dan ada momentum ketika kehidupan mulai membuka pintunya.", en: "Not all time carries the same quality.<br><br>There's a time to wait.<br>There's a time to move forward.<br><br>And there's a momentum when life begins to open its door." },
+
+            h_sec11: { id: "🪷 11. Ritual Penyelarasan & Sankalpa Personal", en: "🪷 11. Alignment Ritual & Personal Sankalpa" },
+            p_sec11: { id: "Memahami koordinat jiwa hanyalah awal.<br><br>Langkah berikutnya adalah menyelaraskan energi agar perjalanan hidup dapat dijalani dengan lebih utuh.", en: "Understanding your soul's coordinates is only the beginning.<br><br>The next step is aligning your energy so life's journey can be lived more wholly." },
+
+            h_sec1_short: { id: "👑 Analisa Jiwa & Arketipe", en: "👑 Soul Analysis & Archetype" },
+            h_sec2_short: { id: "🔗 Elemen & Wacakan Prana Sangkala", en: "🔗 Element & Prana Sangkala Reading" },
+            h_sec3_short: { id: "📊 Peta Energi Tubuh", en: "📊 Body Energy Map" },
+            h_sec4_short: { id: "🕉 Mandala Body Scanning", en: "🕉 Mandala Body Scanning" },
+            h_sec5_short: { id: "⚔ Benturan Jiwa & Fase Kehidupan", en: "⚔ Soul Clashes & Life Phases" },
+            h_sec6_short: { id: "🌿 Pola Garis Leluhur", en: "🌿 Ancestral Line Patterns" },
+            h_sec7_short: { id: "✨ Samaya Jiwa", en: "✨ Soul's Sacred Vow" },
+            h_sec8_short: { id: "🌑 Sangkala Jiwa", en: "🌑 Soul's Shadow Cycle" },
+            h_sec9_short: { id: "💰 Potensi Jiwa & Rezeki", en: "💰 Soul Potential & Fortune" },
+            h_sec10_short: { id: "🕰 Momentum Jiwa (Kala Hita)", en: "🕰 Soul Momentum (Kala Hita)" },
+            h_sec11_short: { id: "🪷 Ritual Penyelarasan & Sankalpa Personal", en: "🪷 Alignment Ritual & Personal Sankalpa" },
+
+            h_testi: { id: "💬 Cerita dari Jiwa yang Sudah Membaca", en: "💬 Stories from Souls Who Already Read Theirs" },
+            p_testi_cta: { id: "Sudah pernah membaca Soul Blueprint Anda? Tulis pengalaman Anda di sini dan bantu jiwa lain menemukan jalannya.", en: "Already read your Soul Blueprint? Write your experience here and help other souls find their way." },
+            lbl_testi_nama: { id: "Nama Anda", en: "Your Name" },
+            ph_testi_nama: { id: "Nama Anda", en: "Your name" },
+            lbl_testi_rating: { id: "Rating Anda", en: "Your Rating" },
+            lbl_testi_isi: { id: "Testimoni Anda", en: "Your Testimonial" },
+            ph_testi_isi: { id: "Ceritakan bagian mana yang paling terasa 'kena', dan apa yang berubah setelah membaca laporan Anda...", en: "Tell us which part resonated most, and what changed after reading your report..." },
+            p_testi_moderasi: { id: "Testimoni Anda akan dikirim ke praktisi untuk ditinjau sebelum ditampilkan di halaman ini.", en: "Your testimonial will be sent to the practitioner for review before being shown on this page." },
+            btn_kirim_testi: { id: "✍️ Kirim Testimoni Saya", en: "✍️ Send My Testimonial" },
+            stat_pembaca_lbl: { id: "Pembaca Terlayani", en: "Readers Served" },
+            stat_rating_lbl: { id: "Rating Rata-rata", en: "Average Rating" },
+            stat_tahun_lbl: { id: "Tahun Berpengalaman", en: "Years of Practice" },
+            badge_urgency: { id: "⏳ Slot Early Access Terbatas", en: "⏳ Limited Early Access Slots" },
+            p_risk_reversal: { id: "Jika setelah membaca laporan lengkap Anda merasa ada bagian yang kurang jelas atau kurang terasa \"nyambung\", Anda bisa menghubungi praktisi untuk sesi klarifikasi singkat — tanpa biaya tambahan. Tujuan kami adalah Anda benar-benar memahami peta jiwa Anda, bukan sekadar membaca laporan.", en: "If after reading the full report some part feels unclear or doesn't quite resonate, you can reach out to the practitioner for a brief clarification session — at no extra cost. Our goal is for you to truly understand your soul map, not just read a report." },
+            peta_locked_text: { id: "Buka Premium untuk melihat angka & makna lengkap", en: "Unlock Premium to see the full numbers & meaning" },
+            peta_dim_juang: { id: "Daya Juang", en: "Fighting Spirit" },
+            peta_dim_emosi: { id: "Kedalaman Emosi", en: "Emotional Depth" },
+            peta_dim_stabilitas: { id: "Stabilitas Batin", en: "Inner Stability" },
+            peta_dim_intuisi: { id: "Intuisi", en: "Intuition" },
+            peta_dim_ekspresi: { id: "Ekspresi Diri", en: "Self-Expression" },
+            peta_dim_mental: { id: "Ketahanan Mental", en: "Mental Resilience" },
+
+            h_premium: { id: "🔓 Soul Blueprint Premium", en: "🔓 Soul Blueprint Premium" },
+            p_premium_intro: { id: "Yang baru saja Anda baca hanyalah gerbang awal. Soul Blueprint Premium akan mengajak Anda menyusuri keseluruhan koordinat jiwa secara utuh, mulai dari identitas terdalam, pola leluhur, Samaya Jiwa, Sangkala Jiwa, potensi, momentum kehidupan, hingga ritual penyelarasan yang disusun secara personal.", en: "What you just read is only the opening gate. Soul Blueprint Premium will guide you through your entire soul coordinates in full — from your deepest identity, ancestral patterns, Soul's Sacred Vow, Soul's Shadow Cycle, potential, life momentum, all the way to a personally crafted alignment ritual." },
+            p_daftar_isi: { id: "Daftar Isi Lengkap", en: "Full Table of Contents" },
+            p_early_access: { id: "Harga Early Access", en: "Early Access Price" },
+            p_early_access_note: { id: "Berlaku sampai akhir bulan ini. Setelahnya kembali ke harga normal $99.", en: "Valid until the end of this month. After that, it returns to the normal price of $99." },
+            p_langkah_pesan: { id: "Langkah pemesanan:", en: "Ordering steps:" },
+            li_order1: { id: "Transfer ke", en: "Transfer to" },
+            li_order2: { id: "Isi nama Anda di kolom di bawah ini", en: "Fill in your name in the field below" },
+            li_order3: { id: "Klik tombol WhatsApp — pesan konfirmasi otomatis terisi beserta data Anda", en: "Click the WhatsApp button — a confirmation message will be automatically filled with your data" },
+            li_order4: { id: "Laporan lengkap dikirimkan langsung oleh praktisi setelah pembayaran dikonfirmasi", en: "The full report will be sent directly by the practitioner after payment is confirmed" },
+            tab_paypal: { id: "💳 PayPal", en: "💳 PayPal" },
+            tab_wise: { id: "🌍 Transfer Wise", en: "🌍 Wise Transfer" },
+            li_paypal1: { id: "Kirim pembayaran via PayPal ke", en: "Send payment via PayPal to" },
+            tab_bank: { id: "🏦 Transfer Bank", en: "🏦 Bank Transfer" },
+            li_bank1: { id: "Transfer ke:", en: "Transfer to:" },
+            li_bank_holder: { id: "Nama pemilik rekening:", en: "Account holder:" },
+            li_bank_swift: { id: "Kode SWIFT/BIC:", en: "SWIFT/BIC code:" },
+            li_wise2: { id: "Masukkan nominal sesuai harga di atas, lalu selesaikan transfer", en: "Enter the amount according to the price above, then complete the transfer" },
+            ph_nama: { id: "Nama Anda", en: "Your Name" },
+            btn_konfirmasi: { id: "📩 Konfirmasi via WhatsApp", en: "📩 Confirm via WhatsApp" },
+
+            p_sankalpa1: { id: "Membaca koordinat jiwa hanyalah langkah pertama. Transformasi sejati terjadi saat Anda berani melepaskan pola yang selama ini menahan langkah Anda — bukan sendirian, tapi didampingi, dan dengan penuh kesadaran.", en: "Reading your soul's coordinates is only the first step. True transformation happens when you dare to release the patterns that have been holding you back — not alone, but guided, and with full awareness." },
+            p_sankalpa2: { id: "Sankalpa Agni Alignment adalah ruang di mana Samaya Jiwa Anda benar-benar diselaraskan kembali — bukan sekadar dibaca, tapi dijalani.", en: "Sankalpa Agni Alignment is a space where your Soul's Sacred Vow is truly realigned — not just read, but lived." },
+            btn_sankalpa: { id: "📧 Daftar Sesi Sankalpa Agni Alignment", en: "📧 Register for a Sankalpa Agni Alignment Session" },
+            link_sankalpa_info: { id: "Lihat info lengkap harga & sesi lanjutan di sekarsoulpathjourney.pages.dev →", en: "See full pricing & follow-up session info at sekarsoulpathjourney.pages.dev →" },
+            p_ardhana1: { id: "Selain koordinat jiwa Anda sendiri, ada satu ruang lagi yang bisa Anda telusuri: koordinat jiwa Anda bersama pasangan. Ardhanaraswari Blueprint membaca peta kecocokan, dinamika, dan pelajaran spiritual dalam sebuah hubungan — sisi lain dari perjalanan yang sama.", en: "Beyond your own soul coordinates, there's one more space worth exploring: your soul coordinates together with your partner. Ardhanaraswari Blueprint reads the map of compatibility, dynamics, and spiritual lessons within a relationship — the other side of the same journey." },
+            p_ardhana2: { id: "Cocok bagi Anda yang ingin memahami relasi lebih dalam — sebagai pasangan, maupun sebagai langkah sebelum melangkah bersama.", en: "Ideal for those who want to understand their relationship more deeply — as a couple, or as a step before committing to one." },
+            btn_ardhana: { id: "💞 Lihat Ardhanaraswari Blueprint", en: "💞 View Ardhanaraswari Blueprint" },
+            link_ardhana_info: { id: "Baca peta kecocokan & kedinamisan Anda bersama pasangan di ardhanaraswari.pages.dev →", en: "Read your compatibility & relationship dynamics map with your partner at ardhanaraswari.pages.dev →" },
+
+            p_footer1: { id: 'Prana Sangkala adalah bagian dari <strong style="color:var(--accent-clay);">Sekar SoulPath Journey</strong><br>di bawah naungan <strong style="color:var(--accent-clay);">Mandala Samaya Bujangga</strong>', en: 'Prana Sangkala is part of <strong style="color:var(--accent-clay);">Sekar SoulPath Journey</strong><br>under the guidance of <strong style="color:var(--accent-clay);">Mandala Samaya Bujangga</strong>' },
+
+            lp1: { id: "1 - Sang Perintis Mandiri", en: "1 - The Independent Pioneer" },
+            lp2: { id: "2 - Sang Pendamai & Sahabat", en: "2 - The Peacemaker & Friend" },
+            lp3: { id: "3 - Sang Pengekspresi Ceria", en: "3 - The Cheerful Expresser" },
+            lp4: { id: "4 - Sang Pembangun Disiplin", en: "4 - The Disciplined Builder" },
+            lp5: { id: "5 - Sang Petualang Bebas", en: "5 - The Free Adventurer" },
+            lp6: { id: "6 - Sang Pengasuh Penuh Cinta", en: "6 - The Loving Caregiver" },
+            lp7: { id: "7 - Sang Pemikir & Pengamat", en: "7 - The Thinker & Observer" },
+            lp8: { id: "8 - Sang Penggerak Kelimpahan", en: "8 - The Abundance Driver" },
+            lp9: { id: "9 - Sang Jiwa Tua Dermawan", en: "9 - The Generous Old Soul" },
+            lp11: { id: "11 - Punya Intuisi Sangat Tajam (Master)", en: "11 - Extremely Sharp Intuition (Master)" },
+            lp22: { id: "22 - Pembangun Ide Besar (Master)", en: "22 - Builder of Big Ideas (Master)" },
+            lp33: { id: "33 - Penyembuh Hati (Master)", en: "33 - Healer of the Heart (Master)" }
+        };
+
+        // ---- EN mirrors of the reading-generation databases (ID versions above stay untouched) ----
+
+        const dbDinamikaElemenEN = {
+            "Api_Api": "Your Core Character and birth Wuku are both the element of <strong>Fire</strong> — your inner strength, integrity, and leadership power are highly dominant and doubled. Your personal foundation is very solid and hard to shake, but the risk is becoming too hard/rigid toward yourself and others. Train a flexible heart so this strength becomes a shield, not a wall that isolates you.",
+            "Angin_Angin": "Your Core Character and birth Wuku are both the element of <strong>Wind</strong> — your relational, expressive, and socially warm side is highly prominent and doubled. You build closeness easily and are loved by those around you, but the risk is depending too much on others' validation or losing your personal direction from constantly accommodating others. Train the courage to voice your own needs, not just preserve relational harmony.",
+            "Air_Air": "Your Core Character and birth Wuku are both the element of <strong>Water</strong> — sharpness of mind, intuition, and the drive to keep growing are highly dominant and doubled within you. You have deep analytical ability and sharp inner sensitivity, but the risk is getting trapped in overthinking or restlessness from a mind that never truly stops. Train yourself to occasionally stop analyzing and simply be present in the moment.",
+            "Angin_Api": "The <strong>Fire</strong> element (strength & structure) from one side of your birth meets <strong>Wind</strong> (relation & expression) from the other — you have a strong personal foundation, yet remain socially connected and warm to others. This combination makes you a leader who is loved, not just respected. However, watch the tendency to hold back your own needs to preserve relationships, which can quietly crack your inner structure.",
+            "Air_Api": "The <strong>Fire</strong> element (strength & structure) from one side of your birth blends with <strong>Water</strong> (mind & intuition) from the other — you are someone who is not only strong and principled, but also deeply considerate before acting. This combination produces a wise decision-maker. The challenge is sometimes analyzing too long before moving, causing momentum to be lost.",
+            "Air_Angin": "The <strong>Wind</strong> element (relation & expression) from one side of your birth blends with <strong>Water</strong> (mind & intuition) from the other — you have high social sensitivity along with deep thinking and strong intuition. This is a natural gift for becoming an advisor, mediator, or excellent listener. However, this combination also makes you easily absorb and overthink others' problems, so maintaining healthy inner boundaries is important."
+        };
+
+        const dbWukuEN = {
+            "Sinta": { patri: "Inherits a calm, non-confrontational, and nurturing nature.", matri: "Carries a pattern of often giving in, suppressing sadness, or self-sacrifice." },
+            "Landep": { patri: "Inherits a sharp, logical, and decisive mindset.", matri: "Holds a record of inner rigidity, difficulty relaxing, and easy anxiety." },
+            "Ukir": { patri: "Inherits artistic talent, an eye for beauty, and creativity.", matri: "An emotional pattern that shifts easily (mood swings) and seeks validation." },
+            "Kulantir": { patri: "Inherits fighting spirit, resilience, and a never-give-up mentality.", matri: "Holds a memory of inner exhaustion from often being the emotional backbone for others." },
+            "Tolu": { patri: "Inherits an agile, dynamic nature that adapts easily.", matri: "A pattern of getting bored easily and struggling to settle or commit to one thing." },
+            "Gumbreg": { patri: "Inherits charm, charisma, and flowing fortune.", matri: "Carries a fear of scarcity, or a pattern of being too generous to the point of forgetting to save." },
+            "Wariga": { patri: "Inherits orderliness, wisdom, and focus on goals.", matri: "A pattern of wanting to control everything to feel safe, and fear of uncertainty." },
+            "Warigadian": { patri: "Inherits a light-bringing, advisory, and helpful nature.", matri: "Often feels guilty when unable to make everyone happy (people pleaser)." },
+            "Julungwangi": { patri: "Inherits sweet speech, charm, and popularity.", matri: "A pattern of covering inner wounds with a smile and difficulty showing vulnerability." },
+            "Sungsang": { patri: "Inherits a unique, out-of-the-box, and innovative way of thinking.", matri: "Often feels misunderstood or different from the family environment." },
+            "Dungulan": { patri: "Inherits a winner's spirit, courage, and leadership drive.", matri: "Holds a pattern of pent-up anger when the ego is hurt or belittled." },
+            "Kuningan": { patri: "Inherits strong spiritual intuition and inner protection.", matri: "A pattern of being overly sensitive to environmental energy and easily tired in crowds." },
+            "Langkir": { patri: "Inherits boldness, risk-taking, and a high zest for life.", matri: "A pattern of acting impulsively when angry or under pressure." },
+            "Medangsia": { patri: "Inherits very strong independence and a solid foundation.", matri: "A pattern of refusing others' help out of pride or fear of being let down." },
+            "Pujut": { patri: "Inherits a love of peace, calm, and simplicity.", matri: "A pattern of often escaping (escapism) when facing conflict or arguments." },
+            "Pahang": { patri: "Inherits high integrity, firm principles, and honesty.", matri: "A pattern of being too rigid in judging right/wrong and struggling to forgive." },
+            "Krulut": { patri: "Inherits a great capacity for love and compassion.", matri: "A pattern of being overly attached or afraid of losing loved ones." },
+            "Merakih": { patri: "Inherits intelligence, innovation, and progressive thinking.", matri: "A pattern of frequent overthinking and worrying about things that haven't happened." },
+            "Tambir": { patri: "Inherits perseverance, hard-working endurance, and thoroughness.", matri: "Holds a feeling of being underappreciated despite doing so much." },
+            "Medangkungan": { patri: "Inherits a balance of logic and emotion, along with mental resilience.", matri: "A pattern of suppressing feelings to avoid family conflict." },
+            "Matal": { patri: "Inherits outer calm while holding great energy within.", matri: "A pattern of sudden outbursts once patience runs out." },
+            "Uye": { patri: "Inherits healing ability and the capacity to cleanse oneself.", matri: "A pattern of dwelling on the past or difficulty moving on from trauma." },
+            "Menail": { patri: "Inherits visionary thinking, planning skill, and a sharp eye for opportunity.", matri: "A pattern of financial anxiety or always feeling not secure enough." },
+            "Prangbakat": { patri: "Inherits a knight's spirit, protectiveness, and fearlessness in facing problems.", matri: "A pattern of being too hard on oneself and rarely allowing rest." },
+            "Bala": { patri: "Inherits group leadership, nurturing care, and loyalty.", matri: "A pattern of prioritizing others' interests to the point of neglecting oneself." },
+            "Ugu": { patri: "Inherits sharp self-analysis and a drive to keep developing.", matri: "A pattern of always finding one's own flaws (inner critic) and struggling to feel satisfied." },
+            "Wayang": { patri: "Inherits flexibility, wisdom, and social intelligence.", matri: "A pattern of losing one's sense of self from constantly adapting to others." },
+            "Kelawu": { patri: "Inherits maturity (old soul), calm, and wise action.", matri: "Holds a childhood wound from being forced to grow up before their time." },
+            "Dukut": { patri: "Inherits high patience, perseverance, and quiet growth.", matri: "A pattern of feeling left behind and often comparing oneself to others." },
+            "Watugunung": { patri: "Inherits peak resilience, stability, and dignity.", matri: "A pattern of feeling they carry the whole family's burden on their shoulders." },
+            "default": { patri: "Inherits fighting spirit and perseverance.", matri: "Holds a memory of strong inner intuition." }
+        };
+
+        const dbLifePathEN = {
+            "1": { arch: "The Independent Pioneer", light: "Very independent, highly initiative-driven, willing to take risks, and possesses natural leadership.", shadow: "Often insists on having their own way, too proud to ask for help even when struggling, and too hard on themselves for fear of failure.", kuat: "Abdomen Area (Courage & Ego)", lemah: "Lower Spine Area (Sense of Security)", gejala: "Frequent migraines, headaches, or stiff shoulders/neck.", eft: "Tap the side of the hand (Karate Chop point).", samaya: "Unconsciously, you carry the pattern of 'better to do it myself than be let down by others.' This wears you out.", fase: "Learning that asking for help doesn't mean weakness. You don't have to carry everything alone.", sankalpa: "Starting today, I allow myself to rest. I release the burden of managing everything by myself. I am safe, I am calm, and I trust the universe supports my path." },
+            "2": { arch: "The Peacemaker & Loyal Friend", light: "Has extraordinary empathy, a good listener, patient, and always keeps harmony.", shadow: "People-pleasing tendencies, difficulty saying 'NO', easily hurt, and often sacrificing their own feelings.", kuat: "Lower Abdomen Area (Feelings)", lemah: "Throat Area (Communication)", gejala: "Sore throat, or a voice that tires easily from holding back words.", eft: "Gently tap the collarbone area (below the neck).", samaya: "You feel your self-worth depends on how much you can please others.", fase: "Learning to set boundaries. You have the right to say 'No' without feeling guilty.", sankalpa: "I am worthy as I am, not because of what I can give others. Starting today, I dare to say no to protect my own inner peace, without guilt." },
+            "3": { arch: "The Cheerful Expresser", light: "Very expressive, articulate, humorous, creative, and optimistic.", shadow: "Gets bored easily, lacks focus, and often exaggerates problems (dramatic).", kuat: "Throat Area (Communication)", lemah: "Legs/Root Area (Focus)", gejala: "Hoarse voice, or easily restless/fidgeting.", eft: "Lightly tap the inner edge of the eyebrows.", samaya: "Often fears their talent or voice isn't being heard.", fase: "Learning to finish what has been started. Reduce distractions, focus on one goal.", sankalpa: "My heart and mind are aligned and calm. I release the emotional drama that exhausts my soul. I choose to focus on completing good works in my life." },
+            "4": { arch: "The Disciplined Builder", light: "Very reliable, disciplined, meticulous, hardworking, and skilled at planning.", shadow: "Too rigid, workaholic, struggles to relax, and panics when plans change.", kuat: "Legs/Root Area (Stability)", lemah: "Chest/Heart Area (Emotional Openness)", gejala: "Lower back pain, frequently stiff muscles.", eft: "Slowly tap the collarbone.", samaya: "You feel that if you don't work hard and manage everything, the world will fall apart.", fase: "Learning to release excessive control. Enjoy life, don't turn everything into work.", sankalpa: "I flow with the good changes in life. I release the desire to control everything beyond my power. I allow my heart to open and receive relaxed happiness." },
+            "5": { arch: "The Free Adventurer", light: "Adapts easily, loves new things, versatile, and open-minded.", shadow: "Gets bored quickly, acts recklessly, and fears binding commitment.", kuat: "Mid-Abdomen Area (Adaptation)", lemah: "Crown Area (Inner Calm)", gejala: "Stomach acid issues (heartburn), catches colds easily.", eft: "Tap under the eyes.", samaya: "Carries a fear of losing freedom when following rules.", fase: "Learning that commitment isn't a prison, but a foundation that lets you fly even higher.", sankalpa: "True calm lies within me, not in a new outside place. I commit to my growth process, for this is where my pure soul's freedom truly lives." },
+            "6": { arch: "The Loving Caregiver", light: "Very nurturing, affectionate, protective of family, and warm.", shadow: "Often meddles in others' affairs out of worry, feels guilty easily, and over-sacrifices.", kuat: "Chest/Heart Area (Love)", lemah: "Mid-Abdomen Area (Personal Boundaries)", gejala: "Tightness in the chest under stress, heavy shoulders.", eft: "Gently pat the center of the chest.", samaya: "You feel worthy when you're needed and able to care for others.", fase: "Learning to love and care for yourself first.", sankalpa: "My inner cup is now filled with love for myself. I release anxiety over others' lives. I trust that every soul has its own path and is safe." },
+            "7": { arch: "The Thinker & Observer", light: "Analytical, sharp thinker, drawn to spirituality or deep knowledge, and has good intuition.", shadow: "Excessive solitude, overthinking, often suspicious, and struggles to open the heart.", kuat: "Forehead/Third Eye Area (Focus)", lemah: "Lower Abdomen Area (Emotion)", gejala: "Frequent frontal headaches, difficulty sleeping (insomnia).", eft: "Tap the outer side of the eyes.", samaya: "You feel safer hiding behind your own thoughts.", fase: "Learning to balance logic and feeling. Don't be afraid to socialize.", sankalpa: "I rest my exhausting, restless mind. I bring my awareness down from my head into the depth of my heart. I am safe to trust, open up, and receive the world's peace." },
+            "8": { arch: "The Abundance Driver", light: "Good business instinct, hardworking, ambitious, dignified, and excellent at execution.", shadow: "Control-obsessed (bossy), overly focused on material wealth/money, and forgets time for family.", kuat: "Lower Abdomen & Legs Area (Action)", lemah: "Chest/Heart Area (Affection)", gejala: "High blood pressure, stiff neck, physical fatigue.", eft: "Tap the Karate Chop point on the palm.", samaya: "Carries a trauma of financial lack, feels the need to hold control to feel safe.", fase: "Learning to distinguish self-worth from bank balance. True abundance lies in inner calm.", sankalpa: "My self-worth is not determined by material achievement. My soul is already rich, sufficient, and abundant from birth. I am at peace because my fortune can never be mistaken for another's." },
+            "9": { arch: "The Generous Old Soul", light: "Sincere, loves to help without expecting return, has broad life understanding, and cares about humanity.", shadow: "Easily disappointed, struggles to forget the past, and sometimes feels spiritually holier-than-thou.", kuat: "Crown Area (Awareness)", lemah: "Soles of the Feet (Grounding)", gejala: "Frequently feels drained of energy, sadness without clear cause.", eft: "Tap the point below the nose/above the lip.", samaya: "You feel you carry the karmic burden of family or those around you.", fase: "Learning to release past wounds. You don't have to save everyone.", sankalpa: "I release the regret, trauma, and stale memories of the past that bind my soul's feet. Today I am free to walk forward with sincerity, peace, and true forgiveness." },
+            "11": { arch: "Sharp Intuition (Master Number 11)", light: "Extremely accurate gut feelings, inspiring, and able to read others' intentions.", shadow: "Easily absorbs negative energy (over-sensitive), panics easily, and tires in crowds.", kuat: "Forehead/Third Eye Area (Intuition)", lemah: "Nervous System (Whole Body)", gejala: "Frequent heart palpitations, excessive anxiety, chronic insomnia.", eft: "Lightly tap the crown of the head.", samaya: "Often feels alienated or 'different,' causing you to suppress your own gut feelings.", fase: "Learning to distinguish your own emotions from absorbed emotions of others. Protect your energy.", sankalpa: "My body and energy are protected by sacred light. I return all the negative emotions I've absorbed back to the universe to be dissolved. My soul is strong, stable, energized, and at peace." },
+            "22": { arch: "Builder of Big Ideas (Master Number 22)", light: "Extraordinary vision for the future paired with practical steps. A leader of large projects.", shadow: "Frustrated when ideas are blocked, too hard on themselves.", kuat: "Chest & Legs Area (Vision and Reality)", lemah: "Bone & Joint System", gejala: "Frequent severe aches in the back and spine.", eft: "Tap the lower side of the chest.", samaya: "Feels burdened by a sense of having a 'great mission' in life.", fase: "Learning patience with the real process. Big things take time to build.", sankalpa: "I move slowly but surely with time. I don't have to complete every big goal today. The universe guides my path with a perfect, balanced rhythm." },
+            "33": { arch: "Healer of the Heart & Compassion (Master Number 33)", light: "Peaceful energy, wise, full of selfless love, a natural healer.", shadow: "Often becomes others' 'emotional dumping ground' to the point of burnout, forgets their own happiness.", kuat: "Chest & Crown Area (Love & Spirit)", lemah: "Root/Legs Area (Physical Endurance)", gejala: "Severe burnout, shoulders that feel like they carry a heavy load.", eft: "Gently pat the center of the chest.", samaya: "Carries an excessive sense of responsibility to heal others' suffering.", fase: "Learning that you can only heal others once your own 'cup' of happiness is full.", sankalpa: "I prioritize healing and loving myself first. I am the healer of my own soul. When I am at peace and happy, that is where my healing energy works automatically." },
+            "default": { arch: "The Growing Soul", light: "Has sensitivity of feeling, a strong willingness to learn.", shadow: "Sometimes hesitant in making inner decisions.", kuat: "Chest Area", lemah: "Head Area", gejala: "Recurring dizziness.", eft: "Tap the center of the chest.", samaya: "A circular emotional pattern.", fase: "Consistency.", sankalpa: "I love myself completely. Today I choose to be calm." }
+        };
+
+        const dbParaEN = {
+            "Laku Pandita Sakti": { salt: "Akasa Variant Salt (Wisdom & Mind Harmonizer)" },
+            "Laku Bulan": { salt: "Amrtha Variant Salt (Inner Restlessness Soother)" },
+            "Laku Kembang": { salt: "Amrtha Variant Salt (Soul Harmony Aligner)" },
+            "Laku Angin": { salt: "Akasa Variant Salt (Shoulder Burden & Stress Reliever)" },
+            "Laku Bintang": { salt: "Akasa Variant Salt (Upper Energy Blockage Release)" },
+            "Laku Bumi": { salt: "Pertiwi Variant Salt (Grounding & Self-Protection)" },
+            "Laku Air": { salt: "Amrtha Variant Salt (Feeling-Cleansing Flow)" },
+            "Laku Surya": { salt: "Agni Variant Salt (Ego & Emotion Balancer)" },
+            "Lakuning Gni Agung": { salt: "Agni Variant Salt (Great Anger & Negative Karma Dissolver)" },
+            "default": { salt: "Amrtha Variant Salt (Energy Balance)" }
+        };
+
+        const dbSaptawaraEN = {
+            "Redite": "Carries Sun (Surya) energy — a warm soul with natural leadership and a love of being the center of attention. Ego is fairly strong, so learning humility and listening to others is important.",
+            "Soma": "Carries Moon (Candra) energy — sensitive, empathetic, and intuitive. Moods shift like lunar phases, so maintaining emotional stability and rest patterns is important.",
+            "Anggara": "Carries Mars/Fire energy — bold, decisive, and full of fighting spirit. Prone to quick anger when triggered, so learning to channel aggressive energy positively is needed.",
+            "Buda": "Carries Mercury energy — intelligent, communicative, and a fast learner. The mind is often full of ideas, making overthinking a risk if not channeled through writing/speaking.",
+            "Wraspati": "Carries Jupiter energy — wise, loves sharing knowledge, and generous of spirit. Tends to be idealistic and easily disappointed when reality doesn't match expectations.",
+            "Sukra": "Carries Venus energy — loves beauty, harmony, and warm relationships. Highly values comfort, but should be wary of being too accommodating to avoid conflict.",
+            "Saniscara": "Carries Saturn energy — disciplined, resilient, and hardworking. Tends to be hard on themselves, so learning to allow rest and be gentler with themselves is needed."
+        };
+
+        const dbPancawaraEN = {
+            "Umanis": "Sweet and pleasant energy — easy to like, friendly, and brings a cheerful atmosphere to those around them.",
+            "Paing": "Strong and fairly dominant energy — high spirit and tends to be expressive, but needs to learn to manage emotions so as not to be easily triggered.",
+            "Pon": "Stable and grounded energy — calm in action, dependable, and tends to think realistically before making decisions.",
+            "Wage": "Hidden and deep energy — holds many private thoughts, appears quiet but is actually full of inner consideration.",
+            "Kliwon": "Strong spiritual energy — highly sensitive to the unseen/spiritual realm, intuitive, but needs to guard against absorbing too much energy from their surroundings."
+        };
+
+        const dbPersonalYearEN = {
+            1: { title: "New Beginnings & Independence", desc: "A year to start new projects, build independence, and take initiative. Good momentum for starting things long delayed, but avoid rushing too much." },
+            2: { title: "Patience & Collaboration", desc: "A year for building relationships, patience, and cooperation. Results come more slowly; focus on strengthening relationships and communication rather than forcing quick results." },
+            3: { title: "Expression & Joy", desc: "A year suited to creativity, socializing, and self-expression. Energy tends to be light and enjoyable, but stay focused to avoid too many distractions." },
+            4: { title: "Hard Work & Foundation", desc: "A year to build a solid foundation through discipline and hard work. Results aren't instant, but what's built this year becomes a long-term footing." },
+            5: { title: "Change & Freedom", desc: "A year full of change, surprises, and movement. Very good for leaving your comfort zone, but you still need an anchor so you're not swept along." },
+            6: { title: "Responsibility & Family", desc: "A year focused on family, relationships, and domestic/emotional responsibility. Much energy goes toward caring for others — don't forget to care for yourself too." },
+            7: { title: "Reflection & Spirituality", desc: "A year for introspection, deepening knowledge, and drawing closer to your spiritual side. Not a year for major expansion, but for understanding yourself more deeply." },
+            8: { title: "Abundance & Achievement", desc: "A year that can bring the fruits of previous hard work, especially in career and finances. A good time to expand, but keep life in balance." },
+            9: { title: "Closure & Release", desc: "A year to close a cycle, release what's no longer relevant, and prepare to welcome a new cycle next year. Good for decluttering, both physically and inwardly." }
+        };
+
+        const prefixArchetypeEN = {
+            "1": "Pioneer", "2": "Peacemaker", "3": "Expresser", "4": "Builder", "5": "Adventurer",
+            "6": "Caregiver", "7": "Thinker", "8": "Driver", "9": "Old Soul",
+            "11": "Intuition Guide", "22": "Vision Builder", "33": "Heart Healer"
+        };
+
+        const fokusLabelsEN = { juang: "Fighting Spirit", emosi: "Emotional Depth", stabilitas: "Inner Stability", intuisi: "Intuition", ekspresi: "Self-Expression", mental: "Mental Resilience" };
+
+        // ---- Apply / switch language ----
+        function applyStaticTranslations() {
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (uiText[key]) el.innerHTML = uiText[key][currentLang];
+            });
+            document.querySelectorAll("[data-i18n-opt]").forEach(el => {
+                const key = el.getAttribute("data-i18n-opt");
+                if (uiText[key]) el.textContent = uiText[key][currentLang];
+            });
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+                const key = el.getAttribute("data-i18n-placeholder");
+                if (uiText[key]) el.placeholder = uiText[key][currentLang];
+            });
+            document.documentElement.lang = currentLang;
+            document.getElementById("btn-lang-id").classList.toggle("active", currentLang === "id");
+            document.getElementById("btn-lang-en").classList.toggle("active", currentLang === "en");
+        }
+
+        function pilihMetodeBayar(metode) {
+            document.getElementById("tab-btn-paypal").classList.toggle("active", metode === "paypal");
+            document.getElementById("tab-btn-bank").classList.toggle("active", metode === "bank");
+            document.getElementById("pay-panel-paypal").classList.toggle("active", metode === "paypal");
+            document.getElementById("pay-panel-bank").classList.toggle("active", metode === "bank");
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            applyStaticTranslations();
+            renderTestimoni();
+            // Jika hasil bacaan sudah tampil, generate ulang dengan bahasa baru (data input tidak berubah)
+            if (!document.getElementById("result-panel").classList.contains("hidden")) {
+                generateBlueprint();
+            }
+            
+        }
+
+        applyStaticTranslations();
+        renderTestimoni();
+        muatTestimoniDariSheet();
+    </script>
+</body>
+</html>
