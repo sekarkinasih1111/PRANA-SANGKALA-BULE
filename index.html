@@ -976,44 +976,34 @@
             </div>`;
         }
 
-        // ---- Testimoni & Social Proof (sumber data: Google Sheets via Google Form) ----
+        // ---- Testimoni & Social Proof (sumber data: Google Sheets, dikirim via Apps Script) ----
         //
-        // ALUR SEKARANG (testimoni masuk otomatis ke Sheet lewat Google Form, kamu tinggal moderasi):
-        // 1. Buat Google Form dengan pertanyaan (judulnya harus PERSIS): Nama | Rating | Testimoni_ID | Meta_ID (opsional)
-        // 2. Di tab "Responses" Form, hubungkan ke spreadsheet yang SHEET_ID-nya ada di bawah ini
-        //    (pilih "Select existing spreadsheet" saat menghubungkan).
-        // 3. Google akan membuat tab baru "Form Responses 1" -> rename jadi "Testimoni" (harus sama dengan SHEET_TAB_NAME di bawah).
-        // 4. Tambahkan 1 kolom manual di ujung kanan tab itu, namanya "Tampilkan".
-        //    Isi "Ya" di baris yang mau ditampilkan di web, kosongkan untuk yang belum/tidak disetujui.
-        //    (Testimoni_EN dan Meta_EN opsional -- kalau tidak ada kolomnya, otomatis pakai versi ID)
-        // 5. Copy link Google Form-nya, isi ke konstanta GOOGLE_FORM_URL di bawah.
-        // 6. Selesai. Testimoni baru dari pengunjung otomatis nambah baris di Sheet -- kamu cukup buka Sheet,
-        //    tulis "Ya" di kolom Tampilkan untuk yang disetujui, tanpa perlu edit kode lagi.
+        // ALUR SEKARANG (testimoni masuk otomatis ke Sheet lewat Apps Script, kamu tinggal moderasi):
+        // 1. Buat Google Sheet dengan tab bernama sama dengan SHEET_TAB_NAME di bawah (default "TESTIMONI"),
+        //    baris pertama berisi header (nama boleh apa saja, tidak case-sensitive): Timestamp, Nama, Negara,
+        //    Rating, Testimoni_ID, Testimoni_EN (opsional), Meta_ID (opsional), Meta_EN (opsional), Kategori,
+        //    Tampilkan.
+        // 2. Ikuti langkah di file AppsScript_TestimoniHandler.gs untuk memasang Apps Script Web App
+        //    yang menulis baris baru ke tab itu setiap ada testimoni terkirim dari halaman ini.
+        // 3. Isi APPS_SCRIPT_URL di bawah dengan URL Web App (berakhiran /exec) hasil deploy.
+        // 4. Isi juga SHEET_ID di bawah dengan ID spreadsheet-nya (untuk menampilkan testimoni di halaman ini).
+        // 5. Selesai. Testimoni baru dari pengunjung otomatis nambah baris di Sheet, kolom "Tampilkan" dibiarkan
+        //    kosong -- kamu cukup buka Sheet, tulis "Ya" di kolom Tampilkan untuk yang disetujui.
+        //    GOOGLE_FORM_URL di bawah tetap disimpan sebagai opsi manual cadangan (link "Isi lewat Google Form").
         const SHEET_ID = "13YX0VXK4LsFwJItgp7n7h1YxRj6YA-SNCSPfitXR08k";
         const SHEET_TAB_NAME = "TESTIMONI"; // nama tab hasil respons Google Form
 
-        // Link Google Form untuk kirim testimoni (dipakai sebagai fallback manual kalau pengiriman langsung gagal).
+        // Link Google Form untuk kirim testimoni (dipakai HANYA sebagai opsi manual cadangan,
+        // misalnya kalau Apps Script belum disetel atau pengunjung ingin kirim lewat tab terpisah).
         const GOOGLE_FORM_URL = "https://forms.gle/FpXe6oKVYVpX97ge8";
 
-        // ---- Pengiriman testimoni LANGSUNG dari halaman ini (tanpa pindah tab) ----
-        // Supaya form di halaman ini bisa langsung mengirim ke Google Form/Sheet kamu, siapkan begini:
-        // 1. Di Google Form kamu, tambahkan 1 pertanyaan baru bertipe "Short answer" (jawaban singkat)
-        //    bernama "Negara" — pengunjung akan mengetik sendiri negaranya (mis. "Indonesia", "Australia").
-        //    Web ini otomatis mengelompokkan "Indonesia" sebagai testimoni Lokal, selain itu sebagai Turis Asing.
-        // 2. Buka Google Form kamu (bukan yang forms.gle, tapi link edit/isi aslinya) di browser,
-        //    klik kanan → "View Page Source" (atau tekan Ctrl+U), lalu Ctrl+F cari kata: action=
-        //    Copy URL yang berakhiran "/formResponse" ke GOOGLE_FORM_ACTION_URL di bawah.
-        // 3. Masih di halaman source yang sama, cari "entry." untuk tiap pertanyaan (Nama, Negara, Rating,
-        //    Testimoni_ID) — setiap pertanyaan punya kode unik seperti entry.123456789. Salin kodenya ke
-        //    FORM_ENTRY di bawah, sesuai pertanyaannya masing-masing.
-        // Kalau langkah ini belum kamu lakukan, tombol kirim akan otomatis mengarahkan ke Google Form biasa.
-        const GOOGLE_FORM_ACTION_URL = "GANTI_DENGAN_ACTION_URL_FORM_ANDA"; // contoh: https://docs.google.com/forms/d/e/1FAIpQLxxxxxxx/formResponse
-        const FORM_ENTRY = {
-            nama: "entry.GANTI_ID_NAMA",
-            negara: "entry.GANTI_ID_NEGARA",
-            rating: "entry.GANTI_ID_RATING",
-            testimoni: "entry.GANTI_ID_TESTIMONI"
-        };
+        // ---- Pengiriman testimoni LANGSUNG dari halaman ini via Google Apps Script ----
+        // 1. Buka Sheet testimoni kamu -> menu Extensions -> Apps Script.
+        // 2. Tempel kode dari file AppsScript_TestimoniHandler.gs (disediakan terpisah) ke situ.
+        // 3. Deploy -> New deployment -> pilih tipe "Web app" -> Execute as: Me, Who has access: Anyone.
+        // 4. Copy URL yang berakhiran "/exec", tempel di APPS_SCRIPT_URL di bawah ini.
+        // Kalau APPS_SCRIPT_URL belum disetel, tombol kirim otomatis membuka Google Form manual.
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7mIxgZUwQNQMSmR83S3kU1XU9NCknO2qZMmjX_pRAbuuitt7Pj83NBgzhiqUAawa3/exec";
 
         // Data cadangan (dipakai HANYA jika SHEET_ID belum diisi, atau Sheet gagal dimuat).
         // Ganti/hapus contoh di bawah ini kalau kamu memilih memakai Google Sheets sepenuhnya.
@@ -1121,40 +1111,43 @@
             });
         }
 
-        // Kirim testimoni langsung dari halaman (tanpa membuka tab baru) ke Google Form/Sheet
+        // Kirim testimoni langsung dari halaman (tanpa membuka tab baru) ke Apps Script -> Sheet
         function kirimTestimoni(event) {
             event.preventDefault();
-            const isEN = currentLang === "en";
             const nama = document.getElementById("testi-input-nama").value.trim();
             const negara = document.getElementById("testi-input-negara").value.trim();
             const rating = document.getElementById("testi-input-rating").value;
             const isi = document.getElementById("testi-input-isi").value.trim();
             if (!nama || !isi) return;
 
-            // Kalau GOOGLE_FORM_ACTION_URL / FORM_ENTRY belum disetel, arahkan ke Google Form manual saja
-            const belumDisetel = !GOOGLE_FORM_ACTION_URL || GOOGLE_FORM_ACTION_URL.indexOf("GANTI_DENGAN") !== -1
-                || Object.values(FORM_ENTRY).some(v => v.indexOf("GANTI_ID") !== -1);
+            // Kalau APPS_SCRIPT_URL belum disetel, arahkan ke Google Form manual saja
+            const belumDisetel = !APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf("GANTI_DENGAN") !== -1;
             if (belumDisetel) {
                 bukaFormTestimoni();
                 return;
             }
 
             const fd = new FormData();
-            fd.append(FORM_ENTRY.nama, nama);
-            fd.append(FORM_ENTRY.negara, negara);
-            fd.append(FORM_ENTRY.rating, rating);
-            fd.append(FORM_ENTRY.testimoni, isi);
+            fd.append("nama", nama);
+            fd.append("negara", negara);
+            fd.append("rating", rating);
+            fd.append("testimoni", isi);
 
             const btn = document.getElementById("testi-submit-btn");
             if (btn) { btn.disabled = true; btn.style.opacity = "0.6"; }
 
-            // mode "no-cors" berarti kita tidak bisa membaca respons Google-nya, tapi datanya tetap terkirim & tersimpan
-            fetch(GOOGLE_FORM_ACTION_URL, { method: "POST", mode: "no-cors", body: fd })
-                .catch(() => { /* tetap tampilkan sukses, karena mode no-cors memang tidak bisa dibaca statusnya */ })
-                .finally(() => {
+            fetch(APPS_SCRIPT_URL, { method: "POST", body: fd })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== "ok") throw new Error(data.message || "unknown error");
                     document.getElementById("testi-form").classList.add("hidden");
                     const successEl = document.getElementById("testi-success-msg");
                     if (successEl) successEl.classList.remove("hidden");
+                })
+                .catch(() => {
+                    // Gagal terkirim (mis. URL Apps Script salah/belum di-deploy ulang) -> tawarkan jalur manual
+                    if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
+                    bukaFormTestimoni();
                 });
         }
 
