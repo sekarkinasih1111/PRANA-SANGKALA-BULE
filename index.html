@@ -4,9 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prana Sangkala - Sekar Soulpath</title>
+
+    <!-- SEO: meta description -->
+    <meta name="description" content="Prana Sangkala — Map of Soul Coordinates in Space and Time. Discover your true character, inner patterns, and soul potential through a blend of numerology, Wuku, and Balinese Pararasan.">
+
+    <!-- Open Graph (preview when shared via WhatsApp / Instagram / etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Prana Sangkala - Sekar Soulpath">
+    <meta property="og:description" content="Map of Soul Coordinates in Space and Time — discover your true character, inner patterns, and soul potential.">
+    <meta property="og:image" content="https://sekarsoulbaliexperience.pages.dev/og-image.jpg">
+    <meta property="og:url" content="https://sekarsoulbaliexperience.pages.dev">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="id_ID">
+    <meta property="og:site_name" content="Prana Sangkala - Sekar Soulpath">
+
+    <!-- Twitter Card (also picked up by some other share apps) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Prana Sangkala - Sekar Soulpath">
+    <meta name="twitter:description" content="Map of Soul Coordinates in Space and Time — discover your true character, inner patterns, and soul potential.">
+    <meta name="twitter:image" content="https://sekarsoulbaliexperience.pages.dev/og-image.jpg">
+
+    <!-- Favicon (simple gold mandala, inline SVG data-URI — no separate file needed) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231A140E'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23C4A054' stroke-width='1.6'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23C4A054'/%3E%3Cline x1='32' y1='8' x2='32' y2='20' stroke='%23C4A054' stroke-width='1.6'/%3E%3Cline x1='32' y1='44' x2='32' y2='56' stroke='%23C4A054' stroke-width='1.6'/%3E%3Cline x1='8' y1='32' x2='20' y2='32' stroke='%23C4A054' stroke-width='1.6'/%3E%3Cline x1='44' y1='32' x2='56' y2='32' stroke='%23C4A054' stroke-width='1.6'/%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ============================================================
+         TRACKING — Google Analytics 4 & Meta Pixel
+         Replace G-XXXXXXXXXX and YOUR_PIXEL_ID below with your real
+         IDs before going live, then remove the wrapping comments.
+         GA4: https://analytics.google.com  |  Meta Pixel: https://business.facebook.com/events_manager
+         ============================================================ -->
+    <!-- Google tag (gtag.js)
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+    <!-- Meta Pixel Code
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_PIXEL_ID');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+    /></noscript>
+    -->
+    <!-- ============================================================ -->
     <style>
         :root {
             --bg-main: #1A140E; --bg-sidebar: #201810; --bg-panel: #251C13; --text-main: #E6DAC3; --text-muted: #B3A488;
@@ -110,8 +167,17 @@
         .testi-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 18px; font-size: 0.9em; line-height: 1.7; position: relative; }
         .testi-quote-mark { font-family: 'Fraunces', serif; font-size: 2.2em; color: var(--accent-gold); opacity: 0.4; line-height: 0.5; display: block; margin-bottom: 4px; }
         .testi-stars { color: var(--accent-gold); font-size: 0.85em; margin-bottom: 6px; letter-spacing: 2px; }
-        .testi-author { margin-top: 10px; font-weight: 700; color: var(--accent-clay); font-size: 0.88em; }
+        .testi-author-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .testi-avatar { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 0.9em; color: #2A2318; }
+        .testi-author { font-weight: 700; color: var(--accent-clay); font-size: 0.88em; }
         .testi-meta { font-weight: 400; color: var(--text-muted); font-size: 0.9em; }
+
+        .disclaimer-box { display: flex; gap: 10px; align-items: flex-start; background: rgba(111,166,155,0.1); border: 1px solid rgba(111,166,155,0.3); border-radius: 6px; padding: 12px 15px; font-size: 0.78em; line-height: 1.6; color: var(--text-muted); }
+        .disclaimer-box .icon { flex: 0 0 auto; font-size: 1.1em; }
+
+        .quicklinks-row { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 4px 0 18px 0; }
+        .quicklinks-row a { font-size: 0.82em; color: var(--accent-gold); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: 0.2s; }
+        .quicklinks-row a:hover { border-bottom-color: var(--accent-gold); }
         .trust-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; margin: 18px 0; }
         .trust-stat { text-align: center; }
         .trust-stat .num { font-family: 'Fraunces', serif; font-size: 1.6em; font-weight: 700; color: var(--accent-clay); display: block; }
@@ -233,6 +299,17 @@
     <div class="main-content">
         <h1 data-i18n="h_main_title">PETA KOORDINAT JIWA</h1>
         <p style="color: var(--text-muted); margin-top:-15px;" data-i18n="p_main_subtitle">Mengenali Pola Batin, Karakter Asli, dan Cara Menenangkan Diri</p>
+
+        <div class="quicklinks-row">
+            <a href="#sec-sankalpa" data-i18n="link_quick_sankalpa">🔥 Sankalpa Agni Alignment →</a>
+            <a href="#sec-ardhana" data-i18n="link_quick_ardhana">💞 Ardhanaraswari Soulmate Blueprint →</a>
+        </div>
+
+        <div class="disclaimer-box">
+            <span class="icon">🌙</span>
+            <span data-i18n="p_disclaimer">Hasil pembacaan ini bersifat spiritual dan reflektif, disusun untuk membantu proses mengenal diri — bukan pengganti diagnosis, terapi, atau saran medis/psikologis profesional. Untuk kondisi kesehatan fisik maupun mental, silakan berkonsultasi dengan tenaga profesional yang berwenang.</span>
+        </div>
+
         <hr>
 
         <div id="welcome-message" style="text-align: center; margin-top: 100px; color: var(--text-muted);">
@@ -464,7 +541,7 @@
                 <button class="btn-primary" onclick="kirimWhatsapp()" data-i18n="btn_konfirmasi">📩 Kirim Konfirmasi & Terima Peta Jiwa Lengkap</button>
             </div>
 
-            <div class="card card-full" style="text-align:center; border: 1px solid #362B1C; background: #201810;">
+            <div class="card card-full" id="sec-sankalpa" style="text-align:center; border: 1px solid #362B1C; background: #201810;">
                 <h3 style="color:#D9C9A0;">🔥 Sankalpa Agni Alignment</h3>
                 <p style="font-size:0.95em; line-height:1.8; color:#E5D9BC; max-width:520px; margin:0 auto;" data-i18n="p_sankalpa1">Membaca koordinat jiwa hanyalah langkah pertama. Transformasi sejati terjadi saat Anda berani melepaskan pola yang selama ini menahan langkah Anda — bukan sendirian, tapi didampingi, dan dengan penuh kesadaran.</p>
                 <p style="font-size:0.9em; line-height:1.8; color:#C9BB9C; max-width:520px; margin:12px auto 0 auto; font-style:italic;" data-i18n="p_sankalpa2">Sankalpa Agni Alignment adalah ruang di mana Samaya Jiwa Anda benar-benar diselaraskan kembali — bukan sekadar dibaca, tapi dijalani.</p>
@@ -472,7 +549,7 @@
                 <p style="margin-top:14px;"><a href="https://sekarsoulbaliexperience.pages.dev" target="_blank" style="color:#B8A888; font-size:0.85em; text-decoration:underline;" data-i18n="link_sankalpa_info">Jelajahi Sekar Bali Soul Journey — retreat 1 hari & 3 hari yang memadukan alam dan transformasi jiwa, di sekarsoulbaliexperience.pages.dev →</a></p>
             </div>
 
-            <div class="card card-full" style="text-align:center; border: 1px dashed var(--accent-purple); background: rgba(107,74,115,0.06);">
+            <div class="card card-full" id="sec-ardhana" style="text-align:center; border: 1px dashed var(--accent-purple); background: rgba(107,74,115,0.06);">
                 <h3 style="color:var(--accent-purple);">💞 Ardhanaraswari Soulmate Blueprint</h3>
                 <p style="font-size:0.95em; line-height:1.8; color:var(--text-main); max-width:520px; margin:0 auto;" data-i18n="p_ardhana1">Selain koordinat jiwa Anda sendiri, ada satu ruang lagi yang bisa Anda telusuri: koordinat jiwa Anda bersama pasangan. Ardhanaraswari Soulmate Blueprint membaca peta kecocokan, dinamika, dan pelajaran spiritual dalam sebuah hubungan — sisi lain dari perjalanan yang sama.</p>
                 <p style="font-size:0.9em; line-height:1.8; color:var(--text-muted); max-width:520px; margin:12px auto 0 auto; font-style:italic;" data-i18n="p_ardhana2">Cocok bagi Anda yang ingin memahami relasi lebih dalam — sebagai pasangan, maupun sebagai langkah sebelum melangkah bersama.</p>
@@ -1180,9 +1257,26 @@
                     <span class="testi-quote-mark">"</span>
                     <div class="testi-stars">${"★".repeat(t.rating)}${"☆".repeat(5 - t.rating)}</div>
                     <div>${isEN ? (t.isi_en || t.isi_id) : t.isi_id}</div>
-                    <div class="testi-author">${t.nama} <span class="testi-meta">— ${t.negara || (isEN ? t.meta_en : t.meta_id) || ""}</span></div>
+                    <div class="testi-author-row">
+                        <div class="testi-avatar" style="background:${warnaAvatar(t.nama)};">${inisialAvatar(t.nama)}</div>
+                        <div class="testi-author">${t.nama} <span class="testi-meta">— ${t.negara || (isEN ? t.meta_en : t.meta_id) || ""}</span></div>
+                    </div>
                 </div>`).join("");
             renderTrustStats();
+        }
+
+        // Avatar inisial testimoni (tanpa foto): 1-2 huruf awal nama, warna konsisten per nama
+        function inisialAvatar(nama) {
+            if (!nama) return "?";
+            const parts = nama.trim().split(/\s+/);
+            const huruf = parts.length > 1 ? (parts[0][0] + parts[1][0]) : parts[0].slice(0, 2);
+            return huruf.toUpperCase();
+        }
+        function warnaAvatar(nama) {
+            const palet = ["#C4A054", "#A996C4", "#6FA69B", "#CB8F62", "#C08072"];
+            let hash = 0;
+            for (let i = 0; i < (nama || "").length; i++) hash = nama.charCodeAt(i) + ((hash << 5) - hash);
+            return palet[Math.abs(hash) % palet.length];
         }
 
         // Pindah tab tampilan testimoni: "lokal" atau "bule"
@@ -1371,11 +1465,20 @@
         function kirimWhatsapp() {
             const nama = document.getElementById("nama_pemesan").value.trim();
             const isEN = (typeof currentLang !== "undefined" && currentLang === "en");
-            if (!nama) {
-                alert(isEN ? "Please enter your name first, so we can process your order confirmation." : "Mohon isi nama Anda dulu ya, supaya konfirmasi pesanan lebih mudah diproses.");
+            const dob = document.getElementById("dob").value;
+
+            // Validasi: tanggal lahir wajib diisi, supaya data pesanan yang dikirim ke praktisi lengkap
+            if (!dob) {
+                alert(isEN ? "Please fill in the date of birth in the side menu first, so your order data is complete." : "Mohon isi Tanggal Lahir di menu samping dulu ya, supaya data pesanan Anda lengkap sebelum dikirim.");
+                document.querySelector('.sidebar').classList.add('active');
+                document.getElementById("dob").focus();
                 return;
             }
-            const dob = document.getElementById("dob").value;
+            if (!nama) {
+                alert(isEN ? "Please enter your name first, so we can process your order confirmation." : "Mohon isi nama Anda dulu ya, supaya konfirmasi pesanan lebih mudah diproses.");
+                document.getElementById("nama_pemesan").focus();
+                return;
+            }
             const lp = document.getElementById("lifepath").value;
             const wName = document.getElementById("wuku").value;
             const sapta = document.getElementById("saptawara").value;
@@ -1421,6 +1524,9 @@
             btn_analisis: { id: "Mulai Analisis Batin", en: "Start Inner Analysis" },
             h_main_title: { id: "PETA KOORDINAT JIWA", en: "MAP OF SOUL COORDINATES" },
             p_main_subtitle: { id: "Mengenali Pola Batin, Karakter Asli, dan Cara Menenangkan Diri", en: "Recognizing Inner Patterns, True Character, and Ways to Calm Yourself" },
+            p_disclaimer: { id: "Hasil pembacaan ini bersifat spiritual dan reflektif, disusun untuk membantu proses mengenal diri — bukan pengganti diagnosis, terapi, atau saran medis/psikologis profesional. Untuk kondisi kesehatan fisik maupun mental, silakan berkonsultasi dengan tenaga profesional yang berwenang.", en: "This reading is spiritual and reflective in nature, meant to support self-understanding — it is not a substitute for professional medical or psychological diagnosis, therapy, or advice. For physical or mental health concerns, please consult a qualified professional." },
+            link_quick_sankalpa: { id: "🔥 Sankalpa Agni Alignment →", en: "🔥 Sankalpa Agni Alignment →" },
+            link_quick_ardhana: { id: "💞 Ardhanaraswari Soulmate Blueprint →", en: "💞 Ardhanaraswari Soulmate Blueprint →" },
             p_welcome: { id: "Silakan isi data lahir klien di menu samping untuk melihat hasil bacaan karakternya.", en: "Please fill in the client's birth data in the side menu to see their character reading." },
             h_ringkasan: { id: "Data Kelahiran & Ringkasan Bacaan", en: "Birth Data & Reading Summary" },
             h_sec1: { id: "👑 1. Analisa Jiwa & Arketipe", en: "👑 1. Soul Analysis & Archetype" },
